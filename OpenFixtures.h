@@ -6,6 +6,7 @@
 #ifndef OpenFixtures
 #define OpenFixtures
 #include <DMXSerial.h>
+#include <Adafruit_NeoPixel.h>
 #include "Arduino.h"
 #endif
 
@@ -37,7 +38,6 @@ class Relay {
       } else {
         digitalWrite(pinPriv, invertedPriv);  // Deactivate relay
       }
-      analogWrite(pinPriv, DMXSerial.read(addressPriv)); // Adjust PWM signal
     }
     // Initialization method for setting up the relay
     void begin(int address, int pin, int threshold, bool inverted) {
@@ -97,4 +97,27 @@ class IRGB {
     int pinRPriv;       // Pin connected to the LED
     int pinGPriv;       // Pin connected to the LED
     int pinBPriv;       // Pin connected to the LED
+};
+
+// Let's get shit interesting! NeoPixel/WS2812/WS2812B compatibility for support with Pixel Mapping
+class NeoPixel_PM_RGB {
+  public:
+    // Refresh method to update LED output based on DMX input
+    void refresh() {
+      for(int i =0; i<pixNumPriv; i++) {
+        pixels.setPixelColor(i, pixels.Color(DMXSerial.read((3*addressPriv)-2),DMXSerial.read((3*addressPriv)-1),DMXSerial.read(3*addressPriv)));
+        pixel.show();
+      }
+    }
+    // Initialization method for setting up the NeoPixels
+    void begin(int address, int pin, int numPix) {
+      addressPriv = address;
+      pinPriv = pin;
+      pixNumPriv = numPix;
+      Adafruit_NeoPixel pixels(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800);
+    }
+  private:
+    int addressPriv;   // DMX address of the NeoPixel
+    int pinPriv;
+    int pixNumPriv;
 };
