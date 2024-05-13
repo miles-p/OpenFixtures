@@ -103,21 +103,31 @@ class IRGB {
 class NeoPixel_PM_RGB {
   public:
     // Refresh method to update LED output based on DMX input
-    void refresh() {
-      for(int i =0; i<pixNumPriv; i++) {
-        pixels.setPixelColor(i, pixels.Color(DMXSerial.read((3*addressPriv)-2),DMXSerial.read((3*addressPriv)-1),DMXSerial.read(3*addressPriv)));
-        pixel.show();
+    void begin();
+
+    void NeoPixel_PM_RGB::refresh() {
+      pixels->clear();
+      for(int i = 0; i<pixNumPriv; i++) {
+        pixels->setPixelColor(i, pixels->Color(DMXSerial.read((3*(i+1))-2),DMXSerial.read((3*(i+1))-1),DMXSerial.read(3*(i+1))));
+        //pixels->setPixelColor(1,pixels->Color(255,0,0));
       }
+      pixels->show();
     }
+
+    NeoPixel_PM_RGB(int address, int pin, int pixNum);
     // Initialization method for setting up the NeoPixels
-    void begin(int address, int pin, int numPix) {
-      addressPriv = address;
-      pinPriv = pin;
-      pixNumPriv = numPix;
-      Adafruit_NeoPixel pixels(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800);
-    }
   private:
     int addressPriv;   // DMX address of the NeoPixel
     int pinPriv;
     int pixNumPriv;
+    Adafruit_NeoPixel* pixels;
 };
+void NeoPixel_PM_RGB::begin() {
+  pixels = new Adafruit_NeoPixel(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800);
+  pixels->begin();
+};
+NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum) {
+  addressPriv = address;
+  pinPriv = pin;
+  pixNumPriv = pixNum;
+}
