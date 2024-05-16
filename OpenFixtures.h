@@ -1,8 +1,9 @@
 /*
   OpenFixtures - by Miles Punch
-  An open source framework for building intelligent lighting fixtures, from scratch!
-  https://github.com/miles-p/OpenFixtures
+  An open-source framework for building intelligent lighting fixtures from scratch.
+  GitHub Repository: https://github.com/miles-p/OpenFixtures
 */
+
 #ifndef OpenFixtures
 #define OpenFixtures
 #include <DMXSerial.h>
@@ -10,124 +11,171 @@
 #include "Arduino.h"
 #endif
 
-// Dimmer class for controlling dimmer channels
+// Class for controlling dimmers
 class Dimmer {
   public:
-    // Refresh method to update dimmer output based on DMX input
+    // Method to initialize dimmer
+    void begin();
+
+    // Method to update dimmer output based on DMX input
     void refresh() {
       analogWrite(pinPriv, DMXSerial.read(addressPriv));
     }
-    // Initialization method for setting up the dimmer
-    void begin(int address, int pin) {
-      addressPriv = address;
-      pinPriv = pin;
-    }
+    Dimmer(int address, int pin);
   private:
-    int addressPriv; // DMX address of the dimmer
-    int pinPriv;     // Pin connected to the dimmer output
+    int addressPriv;   // DMX address of the dimmer
+    int pinPriv;        // Pin connected to the dimmer
 };
 
-// Relay class for controlling relay channels
+// Method definition to initialize dimmer pin
+void Dimmer::begin() {
+  pinMode(pinPriv, OUTPUT);
+};
+
+// Constructor for Dimmer class
+Dimmer::Dimmer(int address, int pin) {
+  addressPriv = address;
+  pinPriv = pin;
+};
+
+// Class for controlling relays
 class Relay {
   public:
-    // Refresh method to update relay output based on DMX input
+    // Method to initialize relay
+    void begin();
+
+    // Method to update relay output based on DMX input
     void refresh() {
-      // Control relay based on DMX value and threshold
       if (DMXSerial.read(addressPriv) >= threshPriv) {
         digitalWrite(pinPriv, !invertedPriv); // Activate relay
       } else {
         digitalWrite(pinPriv, invertedPriv);  // Deactivate relay
       }
     }
-    // Initialization method for setting up the relay
-    void begin(int address, int pin, int threshold, bool inverted) {
-      addressPriv = address;
-      pinPriv = pin;
-      threshPriv = threshold;
-      invertedPriv = inverted;
-    }
+    Relay(int address, int pin, int thresh, bool inverted);
   private:
     int addressPriv;   // DMX address of the relay
     int pinPriv;       // Pin connected to the relay
-    int threshPriv;    // Threshold value for relay activation
-    bool invertedPriv; // Boolean indicating whether the relay logic is inverted
+    int threshPriv;    // Threshold for relay activation
+    bool invertedPriv; // Whether the relay is inverted
 };
 
-// Simple RGB class for controlling colour channels with no intensity parameter. For IRGB, use the IRGB class.
+// Method definition to initialize relay pin
+void Relay::begin() {
+  pinMode(pinPriv, OUTPUT);
+};
+
+// Constructor for Relay class
+Relay::Relay(int address, int pin, int thresh, bool inverted) {
+  addressPriv = address;
+  pinPriv = pin;
+  threshPriv = thresh;
+  invertedPriv = inverted;
+};
+
+// Class for controlling RGB LEDs
 class RGB {
   public:
-    // Refresh method to update relay output based on DMX input
-    void refresh() {
-      analogWrite(pinRPriv, DMXSerial.read(addressPriv));
-      analogWrite(pinGPriv, DMXSerial.read(addressPriv+1));
-      analogWrite(pinBPriv, DMXSerial.read(addressPriv+2));
-    }
-    // Initialization method for setting up the relay
-    void begin(int address, int pinR, int pinG, int pinB) {
-      addressPriv = address;
-      pinRPriv = pinR;
-      pinGPriv = pinG;
-      pinBPriv = pinB;
-    }
-  private:
-    int addressPriv;   // DMX address of the LED
-    int pinRPriv;       // Pin connected to the LED
-    int pinGPriv;       // Pin connected to the LED
-    int pinBPriv;       // Pin connected to the LED
-};
-
-// Simple RGB class for controlling colour channels with no intensity parameter. For IRGB, use the IRGB class.
-class IRGB {
-  public:
-    // Refresh method to update relay output based on DMX input
-    void refresh() {
-      analogWrite(pinRPriv*(DMXSerial.read(addressPriv)/1024), DMXSerial.read(addressPriv+1));
-      analogWrite(pinGPriv*(DMXSerial.read(addressPriv)/1024), DMXSerial.read(addressPriv+2));
-      analogWrite(pinBPriv*(DMXSerial.read(addressPriv)/1024), DMXSerial.read(addressPriv+3));
-    }
-    // Initialization method for setting up the relay
-    void begin(int address, int pinR, int pinG, int pinB) {
-      addressPriv = address;
-      pinRPriv = pinR;
-      pinGPriv = pinG;
-      pinBPriv = pinB;
-    }
-  private:
-    int addressPriv;   // DMX address of the LED
-    int pinRPriv;       // Pin connected to the LED
-    int pinGPriv;       // Pin connected to the LED
-    int pinBPriv;       // Pin connected to the LED
-};
-
-// Let's get shit interesting! NeoPixel/WS2812/WS2812B compatibility for support with Pixel Mapping
-class NeoPixel_PM_RGB {
-  public:
-    // Refresh method to update LED output based on DMX input
+    // Method to initialize RGB LED
     void begin();
 
-    void NeoPixel_PM_RGB::refresh() {
-      pixels->clear();
-      for(int i = 0; i<pixNumPriv; i++) {
-        pixels->setPixelColor(i, pixels->Color(DMXSerial.read((3*(i+1))-2),DMXSerial.read((3*(i+1))-1),DMXSerial.read(3*(i+1))));
-        //pixels->setPixelColor(1,pixels->Color(255,0,0));
-      }
-      pixels->show();
+    // Method to update RGB LED output based on DMX input
+    void refresh() {
+      analogWrite(pinRPriv, DMXSerial.read(addressPriv));
+      analogWrite(pinGPriv, DMXSerial.read(addressPriv + 1));
+      analogWrite(pinBPriv, DMXSerial.read(addressPriv + 2));
     }
-
-    NeoPixel_PM_RGB(int address, int pin, int pixNum);
-    // Initialization method for setting up the NeoPixels
+    RGB(int address, int pinR, int pinG, int pinB);
   private:
-    int addressPriv;   // DMX address of the NeoPixel
-    int pinPriv;
-    int pixNumPriv;
-    Adafruit_NeoPixel* pixels;
+    int addressPriv;   // DMX address of the RGB LED
+    int pinRPriv;      // Red pin connected to the RGB LED
+    int pinGPriv;      // Green pin connected to the RGB LED
+    int pinBPriv;      // Blue pin connected to the RGB LED
 };
+
+// Method definition to initialize RGB LED pins
+void RGB::begin() {
+  pinMode(pinRPriv, OUTPUT);
+  pinMode(pinGPriv, OUTPUT);
+  pinMode(pinBPriv, OUTPUT);
+};
+
+// Constructor for RGB class
+RGB::RGB(int address, int pinR, int pinG, int pinB) {
+  addressPriv = address;
+  pinRPriv = pinR;
+  pinGPriv = pinG;
+  pinBPriv = pinB;
+}
+
+// Class for controlling RGB LEDs with individual control
+class IRGB {
+  public:
+    // Method to initialize individually controlled RGB LED
+    void begin();
+
+    // Method to update individually controlled RGB LED output based on DMX input
+    void refresh() {
+      analogWrite(pinRPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 1));
+      analogWrite(pinGPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 2));
+      analogWrite(pinBPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 3));
+    }
+    IRGB(int address, int pinR, int pinG, int pinB);
+  private:
+    int addressPriv;   // DMX address of the individually controlled RGB LED
+    int pinRPriv;      // Red pin connected to the RGB LED
+    int pinGPriv;      // Green pin connected to the RGB LED
+    int pinBPriv;      // Blue pin connected to the RGB LED
+};
+
+// Method definition to initialize individually controlled RGB LED pins
+void IRGB::begin() {
+  pinMode(pinRPriv, OUTPUT);
+  pinMode(pinGPriv, OUTPUT);
+  pinMode(pinBPriv, OUTPUT);
+};
+
+// Constructor for IRGB class
+IRGB::IRGB(int address, int pinR, int pinG, int pinB) {
+  addressPriv = address;
+  pinRPriv = pinR;
+  pinGPriv = pinG;
+  pinBPriv = pinB;
+}
+
+// Class for controlling NeoPixel RGB LEDs with Pixel Mapping
+class NeoPixel_PM_RGB {
+  public:
+    // Method to initialize NeoPixel RGB LEDs
+    void begin();
+
+    // Method to update NeoPixel RGB LEDs output based on DMX input
+    void refresh() {
+      pixels->clear();
+      for (int i = 1; i < pixNumPriv+1; i++) {
+        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read((3*i-2)+3*(addressPriv-1)), DMXSerial.read((3*i-1)+3*(addressPriv-1)), DMXSerial.read((3*i)+3*(addressPriv-1))));
+      };
+      pixels->show();
+    };
+
+    // Constructor for NeoPixel_PM_RGB class
+    NeoPixel_PM_RGB(int address, int pin, int pixNum);
+  private:
+    int addressPriv;           // DMX address of the NeoPixel
+    int pinPriv;               // Pin connected to the NeoPixel
+    int pixNumPriv;            // Number of NeoPixels
+    Adafruit_NeoPixel* pixels; // NeoPixel object
+};
+
+// Method definition to initialize NeoPixel RGB LEDs
 void NeoPixel_PM_RGB::begin() {
   pixels = new Adafruit_NeoPixel(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800);
   pixels->begin();
 };
+
+// Constructor for NeoPixel_PM_RGB class
 NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum) {
   addressPriv = address;
   pinPriv = pin;
   pixNumPriv = pixNum;
-}
+};

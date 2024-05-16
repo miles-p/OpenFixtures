@@ -1,12 +1,10 @@
-#include <OpenFixtures.h>
-Relay relay1;
+#include <OpenFixtures.h>   // Import my library
+Relay relay1(1, 6, 128, false);   // Address 1, pin 6, trigger threshold 128/256, turn ON at threshold
 
 void setup() {
   // put your setup code here, to run once:
 DMXSerial.init(DMXReceiver);
-pinMode(6,OUTPUT);
-
-relay1.begin(1, 6, 64, false);
+relay1.begin();
 }
 
 void loop() {
