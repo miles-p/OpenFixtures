@@ -65,7 +65,46 @@ rgb1.refresh();
 }
 
 ```
-If you've followed along so far (good on you), you will be able to read this like it's English now. That's the very point of this project. This is for RGB with no intensity channel in the DMX.
+If you've followed along so far (good on you), you will be able to read this like it's English (oder Deutsch) now. That's the very point of this project. This is for RGB with no intensity channel in the DMX layout.
+
+### IRGB
+```
+#include <OpenFixtures.h>   // Import my library
+IRGB irgb1(1, 6, 7, 8);   // Address 1, pin 6-8 (for Red, Green, Blue)
+// DANGER: only use arduino pins that fully support PWM so that you have a fun time with colour dimming.
+
+void setup() {
+  // put your setup code here, to run once:
+DMXSerial.init(DMXReceiver);
+irgb1.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+irgb1.refresh();
+}
+
+```
+Again, this is the IRGB fixture profile, with a very simple initialization alike the RGB profile. Great! This now has an intensity channel in the DMX that allows cheaper controllers to have better control of these fixtures.
+
+### NeoPixel/WS2812/WS2812B (Pixel Mapped & RGB)
+```
+#include <OpenFixtures.h>   // Import my library
+NeoPixel_PM_RGB neo(1, 6, 8);   // Address 1, pin 6, 8 celled fixture
+
+void setup() {
+  // put your setup code here, to run once:
+DMXSerial.init(DMXReceiver);
+neo.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+neo.refresh();
+}
+```
+This is where things both get funky and strange at the same time.
+This is the NeoPixel and WS2812 class for Pixel Map RGB fixtures where you have many pixels in a strip. This is definitely the coolest fixture (yet) that will probably be the most used fixture type for DIY fixtures.
 ## License and Usage
 ### Can
 - Use for free in development of a fixture or lighting system.
@@ -75,8 +114,8 @@ If you've followed along so far (good on you), you will be able to read this lik
 - Commercialize a product built on the OpenFixtures code or designs, with a reference to your use of this material, such as on a website or in an instructional manual.
 ### Can't
 - Pretend it's yours.
-- Use in a system with either the intent or ability to injure a person (within the bounds of practiability) such as flame generation, cannons, other dangerous or restricted methods. I'm not taking responsibility because you made a DMX controlled chainsaw and it took your face off.
-- Trust me to contribute regularly. Ain't nobody got time for that.
+- Use in a system with either the intent or ability to injure a person (within the bounds of practiability) such as flame generation, cannons, other dangerous or restricted methods. I'm not taking responsibility because you made a DMX controlled chainsaw and it took your leg off.
+- Trust me to contribute regularly.
 - Travel faster than $3.00 \times 10^{8} \text{ms}^{-1}$.
 ### Please
 - Send me an email about how you used my code/designs.
