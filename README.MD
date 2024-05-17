@@ -10,6 +10,19 @@ This project is an Arduino based lighting fixture system that provides an easy a
 4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting
 5. PCB Support with a custom OpenFixtures PCB. This would theoretically feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. This would be the product associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable.
 
+## Installation
+**This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
+
+1. Download and install the Arduino IDE (https://www.arduino.cc/en/software)
+2. Select a supported microcontroller (AVE, etc)
+3. To install the library, download the latest build, and select it for installation:
+- Sketch > Include Library > Add .ZIP library > *Select downloaded ZIP file*
+4. Wait for installation to run.
+5. To use a pre-made example fixture setup file, access the Examples with:
+- File > Examples > OpenFixtures > *example to load*
+6. Use Ctrl-U to upload to the board. Note that in most cases, the RS485 $\rightarrow$ Arduino connection must be removed while uploading to ensure the comms bus works properly. This can be avoided by using the Arduino Leonardo which has the seperate USB buses.
+
+
 ## Examples
 ### Dimmer Channels
 ```
