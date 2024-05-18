@@ -152,14 +152,14 @@ class NeoPixel_PM_RGB {
     // Method to update NeoPixel RGB LEDs output based on DMX input
     void refresh() {
       pixels->clear();
-      for (int i = 1; i < pixNumPriv+1; i++) {
-        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read((3*i-2)+3*(addressPriv-1)), DMXSerial.read((3*i-1)+3*(addressPriv-1)), DMXSerial.read((3*i)+3*(addressPriv-1))));
+      for (int i = startPixPriv; i < pixNumPriv+startPixPriv; i++) {
+        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read((3*i-2)+(addressPriv-1)), DMXSerial.read((3*i-1)+(addressPriv-1)), DMXSerial.read((3*i)+(addressPriv-1))));
       };
       pixels->show();
     };
 
     // Constructor for NeoPixel_PM_RGB class
-    NeoPixel_PM_RGB(int address, int pin, int pixNum);
+    NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix);
   private:
     int addressPriv;           // DMX address of the NeoPixel
     int pinPriv;               // Pin connected to the NeoPixel
@@ -174,8 +174,9 @@ void NeoPixel_PM_RGB::begin() {
 };
 
 // Constructor for NeoPixel_PM_RGB class
-NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum) {
+NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix) {
   addressPriv = address;
   pinPriv = pin;
   pixNumPriv = pixNum;
+  startPixPriv = startPix;
 };

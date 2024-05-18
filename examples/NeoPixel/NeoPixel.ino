@@ -1,15 +1,13 @@
-#include <OpenFixtures.h>
-NeoPixel_PM_RGB neopixel1(1, 6, 1);
+#include <OpenFixtures.h>   // Import my library
+NeoPixel_PM_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 celled fixture, 1st cell onwards (this is not zero indexed)
 
 void setup() {
   // put your setup code here, to run once:
-  DMXSerial.init(DMXReceiver);
-
-  neopixel1.begin(); // Assuming pin 6 for Red, pin 7 for Green, and pin 8 for Blue
+DMXSerial.init(DMXReceiver);
+neo.begin();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  neopixel1.refresh();
-  //delay(300);
+neo.refresh();
 }

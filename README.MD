@@ -103,7 +103,7 @@ Again, this is the IRGB fixture profile, with a very simple initialization alike
 ### NeoPixel/WS2812/WS2812B (Pixel Mapped & RGB)
 ```
 #include <OpenFixtures.h>   // Import my library
-NeoPixel_PM_RGB neo(1, 6, 8);   // Address 1, pin 6, 8 celled fixture
+NeoPixel_PM_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 celled fixture, 1st cell onwards (this is not zero indexed)
 
 void setup() {
   // put your setup code here, to run once:
