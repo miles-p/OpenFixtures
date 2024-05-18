@@ -180,3 +180,43 @@ NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix)
   pixNumPriv = pixNum;
   startPixPriv = startPix;
 };
+
+
+
+// Class for controlling NeoPixel RGB LEDs with Pixel Mapping
+class NeoPixel_RGB {
+  public:
+    // Method to initialize NeoPixel RGB LEDs
+    void begin();
+
+    // Method to update NeoPixel RGB LEDs output based on DMX input
+    void refresh() {
+      pixels->clear();
+      for (int i = startPixPriv; i < pixNumPriv+startPixPriv; i++) {
+        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read(1+(addressPriv-1)), DMXSerial.read(1+(addressPriv-1)), DMXSerial.read(1+(addressPriv-1))));
+      };
+      pixels->show();
+    };
+
+    // Constructor for NeoPixel_PM_RGB class
+    NeoPixel_RGB(int address, int pin, int pixNum, int startPix);
+  private:
+    int addressPriv;           // DMX address of the NeoPixel
+    int pinPriv;               // Pin connected to the NeoPixel
+    int pixNumPriv;            // Number of NeoPixels
+    Adafruit_NeoPixel* pixels; // NeoPixel object
+};
+
+// Method definition to initialize NeoPixel RGB LEDs
+void NeoPixel_RGB::begin() {
+  pixels = new Adafruit_NeoPixel(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800);
+  pixels->begin();
+};
+
+// Constructor for NeoPixel_PM_RGB class
+NeoPixel_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix) {
+  addressPriv = address;
+  pinPriv = pin;
+  pixNumPriv = pixNum;
+  startPixPriv = startPix;
+};

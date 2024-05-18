@@ -6,9 +6,9 @@ This project is an Arduino based lighting fixture system that provides an easy a
 **Note that this roadmap is non-linear and some tasks may appear completed before others. This may happen in part due to some things being in beta before being adopted, or because I can't be stuffed to do the next thing.**
 1. Color control in many modes, such as CMY, RGB, and integration to LED strip protocols such as WS2812B or NeoPixel.
 2. Movement controls with Pan and/or Tilt. This would theoretically be accompanied by Fine/Coarse modes for both channels, as this is a staple of lighting fixtures.
-3. Custom fixture maker tool that is able to export both OpenFixtures code, and .GDTF files, meaning the LD can rest easy integrating custom lights onto robust, existing controllers, such as MA, Eos, Onyx, and ChamSys.
+3. Custom fixture maker tool that is able to export both OpenFixtures code, and .GDTF files, meaning the LD can rest easy integrating custom lights onto robust, existing controllers, such as MA, Eos, Onyx, and ChamSys. This support will not be extended to all controllers, but where applicable, I will definitely attempt to make sure these formats such as .GDTF will be useful.
 4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting
-5. PCB Support with a custom OpenFixtures PCB. This would theoretically feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. This would be the product associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable.
+5. PCB Support with a custom OpenFixtures PCB. This would theoretically be many different models of fixtures that feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. These would be the products associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable.
 
 ## Installation
 **This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
@@ -118,6 +118,24 @@ neo.refresh();
 ```
 This is where things both get funky and strange at the same time.
 This is the NeoPixel and WS2812 class for Pixel Map RGB fixtures where you have many pixels in a strip. This is definitely the coolest fixture (yet) that will probably be the most used fixture type for DIY fixtures.
+
+### NeoPixel/WS2812/WS2812B (**Non**-Pixel Mapped & RGB)
+```
+#include <OpenFixtures.h>   // Import my library
+NeoPixel_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 proceeding cells into 1 fixture, 1st cell onwards (this is not zero indexed)
+
+void setup() {
+  // put your setup code here, to run once:
+DMXSerial.init(DMXReceiver);
+neo.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+neo.refresh();
+}
+```
+This is the same as the NeoPixel sketch as written above, however with the twist that this doesn't pixel map the cells of the NeoPixel, rather treats a strip as one fixture. It still requires a start and end pixel, so a strip can be broken up into a compound multi-fixture arrangement. It's very complex, but this is the most flexible option.
 ## License and Usage
 ### Can
 - Use for free in development of a fixture or lighting system.
@@ -129,7 +147,7 @@ This is the NeoPixel and WS2812 class for Pixel Map RGB fixtures where you have 
 - Pretend it's yours.
 - Use in a system with either the intent or ability to injure a person (within the bounds of practiability) such as flame generation, cannons, other dangerous or restricted methods. I'm not taking responsibility because you made a DMX controlled chainsaw and it took your leg off.
 - Trust me to contribute regularly.
-- Travel faster than $3.00 \times 10^{8} \text{ms}^{-1}$.
+- Travel faster than $3.00 \times 10^{8} \text{ } \text{ms}^{-1}$.
 ### Please
 - Send me an email about how you used my code/designs.
 - Use responsibly and avoid being evil.
