@@ -15,9 +15,10 @@
 class Dimmer {
   public:
     // Method to initialize dimmer
+    // @brief Initialize all required parts of the dimmer object. 
     void begin();
 
-    // Method to update dimmer output based on DMX input
+    // @brief Method to update dimmer output based on DMX input
     void refresh() {
       analogWrite(pinPriv, DMXSerial.read(addressPriv));
     }
@@ -164,6 +165,7 @@ class NeoPixel_PM_RGB {
     int addressPriv;           // DMX address of the NeoPixel
     int pinPriv;               // Pin connected to the NeoPixel
     int pixNumPriv;            // Number of NeoPixels
+    int startPixPriv;
     Adafruit_NeoPixel* pixels; // NeoPixel object
 };
 
@@ -204,6 +206,7 @@ class NeoPixel_RGB {
     int addressPriv;           // DMX address of the NeoPixel
     int pinPriv;               // Pin connected to the NeoPixel
     int pixNumPriv;            // Number of NeoPixels
+    int startPixPriv;          // Pixel start
     Adafruit_NeoPixel* pixels; // NeoPixel object
 };
 
@@ -214,7 +217,7 @@ void NeoPixel_RGB::begin() {
 };
 
 // Constructor for NeoPixel_PM_RGB class
-NeoPixel_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix) {
+NeoPixel_RGB::NeoPixel_RGB(int address, int pin, int pixNum, int startPix) {
   addressPriv = address;
   pinPriv = pin;
   pixNumPriv = pixNum;
