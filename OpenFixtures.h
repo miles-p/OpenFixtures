@@ -8,6 +8,7 @@
 #define OpenFixtures
 #include <DMXSerial.h>
 #include <Adafruit_NeoPixel.h>
+#include <Servo.h>
 #include "Arduino.h"
 #endif
 
@@ -223,3 +224,30 @@ NeoPixel_RGB::NeoPixel_RGB(int address, int pin, int pixNum, int startPix) {
   pixNumPriv = pixNum;
   startPixPriv = startPix;
 };
+
+class Servo {
+  public:
+    void begin();
+    void refresh() {
+      Servo.write(map(DMXSerial.read(addressPriv),0,255,0,180));
+    };
+    Servo(int address, int pin, int servoMin, int servoMax);
+  private:
+    int addressPriv;
+    int pinPriv;
+    int servoMin;
+    int servoMax;
+    Servo* servo;
+}
+
+void Servo::begin() {
+  servo = new Servo();
+  servo->attach(pinPriv);
+}
+
+Servo::Servo(int address, int pin, int servoMin, int servoMax) {
+  addressPriv = address;
+  pinPriv = pin;
+  servoMinPriv = servoMin;
+  servoMaxPriv = servoMax;
+}

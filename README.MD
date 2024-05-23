@@ -136,6 +136,24 @@ neo.refresh();
 }
 ```
 This is the same as the NeoPixel sketch as written above, however with the twist that this doesn't pixel map the cells of the NeoPixel, rather treats a strip as one fixture. It still requires a start and end pixel, so a strip can be broken up into a compound multi-fixture arrangement. It's very complex, but this is the most flexible option.
+
+### Servo Motors
+```
+#include <OpenFixtures.h>   // Import my library
+Servo servo(1, 6, 0, 180);   // Address 1, pin 6, between 0 and 180 degrees (this is the full range with most servos)
+
+void setup() {
+  // put your setup code here, to run once:
+DMXSerial.init(DMXReceiver);
+servo.begin();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+servo.refresh();
+}
+```
+This is the control structure for controlling Servo Motors from OpenFixtures given a full range of the servo, where the administrator can change the full range of the servo in runtime. This allows for moving head/gobo/color wheel movement within OpenFixtures.
 ## FixtureCreator
 In this GitHub folder, you will see a python script in FixtureCreatorBeta/creator.py that gives you access  to the beta of the Arduino script creator for OpenFixtures. Experiment at your own risk. It's kinda cool I guess.
 ## License and Usage

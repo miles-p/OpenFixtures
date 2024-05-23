@@ -7,16 +7,18 @@ fixturesDesc = [
     "RGB (Analog 3ch Control)",                      # RGB light with 3 channel analog control
     "IRGB (Analog 4ch Control)",                     # IRGB light with 4 channel analog control
     "Relay (Binary Control with Threshold and Inversion)",  # Relay with binary control including threshold and inversion settings
-    "NeoPixel (Digital 1-pin RGB Pixel Control)"     # NeoPixel with digital 1-pin RGB pixel control
+    "NeoPixel (Digital 1-pin RGB Pixel Control)",    # NeoPixel with digital 1-pin RGB pixel control
+    "Servo (PWM 1-pin Servo Motor)"
 ]
 
 # Settings required for each type of fixture
 fixturesSettings = [
-    "Address (0-512),Pin",                                   # Settings for Dimmer
-    "Address (0-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for RGB
-    "Address (0-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for IRGB
-    "Address (0-512),Pin,Threshold (0-256),Inversion (true/false)",  # Settings for Relay
-    "Address (0-512),Pin,Number of Cells,Starting Cell"      # Settings for NeoPixel
+    "Address (1-512),Pin",                                   # Settings for Dimmer
+    "Address (1-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for RGB
+    "Address (1-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for IRGB
+    "Address (1-512),Pin,Threshold (0-256),Inversion (true/false)",  # Settings for Relay
+    "Address (1-512),Pin,Number of Cells,Starting Cell",     # Settings for NeoPixel
+    "Address (1-512),Pin,Minimum Servo Angle, Maximum Servo Angle"
 ]
 
 # Fixture classes corresponding to each fixture type
@@ -25,7 +27,8 @@ fixtureClasses = [
     "RGB",               # Class for RGB
     "IRGB",              # Class for IRGB
     "Relay",             # Class for Relay
-    "NeoPixel_PM_RGB"    # Class for NeoPixel
+    "NeoPixel_PM_RGB",   # Class for NeoPixel
+    "Servo"
 ]
 
 # Initialize a 10x1 matrix to store fixtures' settings
