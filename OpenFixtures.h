@@ -45,9 +45,7 @@ class Relay {
   public:
     // Method to initialize relay
     void begin();
-
-    // Method to update relay output based on DMX input
-    void refresh() {
+// Method to update relay output based on DMX input void refresh() {
       if (DMXSerial.read(addressPriv) >= threshPriv) {
         digitalWrite(pinPriv, !invertedPriv); // Activate relay
       } else {

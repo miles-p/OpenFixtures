@@ -4,11 +4,11 @@ This project is an Arduino based lighting fixture system that provides an easy a
 
 ### Roadmap and Objectives
 **Note that this roadmap is non-linear and some tasks may appear completed before others. This may happen in part due to some things being in beta before being adopted, or because I can't be stuffed to do the next thing.**
-1. Color control in many modes, such as CMY, RGB, and integration to LED strip protocols such as WS2812B or NeoPixel.
-2. Movement controls with Pan and/or Tilt. This would theoretically be accompanied by Fine/Coarse modes for both channels, as this is a staple of lighting fixtures.
-3. Custom fixture maker tool that is able to export both OpenFixtures code, and .GDTF files, meaning the LD can rest easy integrating custom lights onto robust, existing controllers, such as MA, Eos, Onyx, and ChamSys. This support will not be extended to all controllers, but where applicable, I will definitely attempt to make sure these formats such as .GDTF will be useful.
-4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting
-5. PCB Support with a custom OpenFixtures PCB. This would theoretically be many different models of fixtures that feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. These would be the products associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable.
+1. Color control in many modes, such as CMY, RGB, and integration to LED strip protocols such as WS2812B or NeoPixel. *[UPDATE: Color is supported in RGB mode, as well as pixel/non-pixel WS2812B & NeoPixel]*
+2. Movement controls with Pan and/or Tilt. This would theoretically be accompanied by Fine/Coarse modes for both channels, as this is a staple of lighting fixtures. *[UPDATE: Servo motors are implemented in a non-tested, purely beta method. Steppers coming soon.]*
+3. Custom fixture maker tool that is able to export both OpenFixtures code, and .GDTF files, meaning the LD can rest easy integrating custom lights onto robust, existing controllers, such as MA, Eos, Onyx, and ChamSys. This support will not be extended to all controllers, but where applicable, I will definitely attempt to make sure these formats such as .GDTF will be useful. *[UPDATE: Python based code generator now exists: GTDF and other not yet, however they'll be here when I can get around to them.]*
+4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting *[UPDATE: Not yet. Can't figure it out...]*
+5. PCB Support with a custom OpenFixtures PCB. This would theoretically be many different models of fixtures that feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. These would be the products associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable. *[UPDATE: Version 1 of the PCB is in design and does exist in beta. First prototypes available soon.]*
 
 ## Installation
 **This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
@@ -156,6 +156,10 @@ servo.refresh();
 This is the control structure for controlling Servo Motors from OpenFixtures given a full range of the servo, where the administrator can change the full range of the servo in runtime. This allows for moving head/gobo/color wheel movement within OpenFixtures.
 ## FixtureCreator
 In this GitHub folder, you will see a python script in FixtureCreatorBeta/creator.py that gives you access  to the beta of the Arduino script creator for OpenFixtures. Experiment at your own risk. It's kinda cool I guess.
+
+## Help out
+Please do. It would be incredible if you forked the project to add any cool feature you want to see. I'm one person, and get busy quickly. Please consider publishing any code modifications or additions including new features you produce.
+
 ## License and Usage
 ### Can
 - Use for free in development of a fixture or lighting system.
