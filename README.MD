@@ -20,8 +20,14 @@ This project is an Arduino based lighting fixture system that provides an easy a
 4. Wait for installation to run.
 5. To use a pre-made example fixture setup file, access the Examples with:
 - File > Examples > OpenFixtures > *example to load*
-6. Use Ctrl-U to upload to the board. Note that in most cases, the RS485 $\rightarrow$ Arduino connection must be removed while uploading to ensure the comms bus works properly. This can be avoided by using the Arduino Leonardo which has the seperate USB buses.
+6. Use Ctrl-U to upload to the board. Note that in most cases, the RS485 $\rightarrow$ Arduino connection must be removed while uploading to ensure the comms bus works properly. This can be avoided by using the Arduino Leonardo which has the seperate USB buses, but that is yet untested, so try it at your own discretion.
 
+## How to build one
+To build a prototype of the OpenFixtures beta (which is the 4xFET controller), download the zip folder in the PCB folder, upload it to a PCB service, and get it made. Sourcing parts from [Jaycar](https://jaycar.com.au), [Core Electronics](https://core-electronics.com.au), and [Element14](https://au.element14.com) was easy for an Australian, but find any reliable source for these parts.
+### Bill of Materials
+![image](bom.png)
+### PCB (Printed)
+![image](pcb_print.png)
 
 ## Examples
 ### Dimmer Channels

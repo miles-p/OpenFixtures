@@ -282,3 +282,35 @@ Servo::Servo(int address, int pin, int servoMin, int servoMax) {
   servoMinPriv = servoMin;
   servoMaxPriv = servoMax;
 }
+
+class ServoReel {
+  public:
+    void begin();
+    void refresh() {
+      Servo.write(map(DMXSerial.read(addressPriv),0,255,0, reelSlotsCountPriv)*((servoMaxPriv-servoMinPriv)/reelSlotsCountPriv)+adjustmentAnglePriv);
+      //Servo.write(map(DMXSerial.read(addressPriv),0,255,0,180));
+    };
+    ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle);
+  private:
+    int addressPriv;
+    int pinPriv;
+    int servoMin;
+    int servoMax;
+    int reelSlotsCount;
+    int adjustmentAngle;
+    Servo* servo;
+}
+
+void ServoReel::begin() {
+  servo = new Servo();
+  servo->attach(pinPriv);
+}
+
+ServoReel::ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle) {
+  addressPriv = address;
+  pinPriv = pin;
+  servoMinPriv = servoMin;
+  servoMaxPriv = servoMax;
+  reelSlotsCountPriv = reelSlotsCount;
+  adjustmentAnglePriv = adjustmentAngle;
+}
