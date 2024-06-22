@@ -52,10 +52,14 @@ class RangedDimmer {
     void refresh() {
       analogWrite(pinPriv, map(DMXSerial.read(addressPriv), dmxLowPriv, dmxHighPriv, outputLowPriv, outputHighPriv));
     }
-    RangedDimmer(int address, int pin);
+    RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int outputLow, int outputHigh);
   private:
     int addressPriv;   // DMX address of the dimmer
     int pinPriv;        // Pin connected to the dimmer
+    int dmxLowPriv;
+    int dmxHighPriv;
+    int outputLowPriv;
+    int outputHighPriv;
 };
 
 // Method definition to initialize dimmer pin
@@ -79,12 +83,13 @@ class Relay {
     // Method to initialize relay
     void begin();
 // Method to update relay output based on DMX input void refresh() {
-      if (DMXSerial.read(addressPriv) >= threshPriv) {
+  void refresh() {
+    if (DMXSerial.read(addressPriv) >= threshPriv) {
         digitalWrite(pinPriv, !invertedPriv); // Activate relay
       } else {
         digitalWrite(pinPriv, invertedPriv);  // Deactivate relay
-      }
-    }
+      };
+    };
     Relay(int address, int pin, int thresh, bool inverted);
   private:
     int addressPriv;   // DMX address of the relay
@@ -139,7 +144,7 @@ RGB::RGB(int address, int pinR, int pinG, int pinB) {
   pinRPriv = pinR;
   pinGPriv = pinG;
   pinBPriv = pinB;
-}
+};
 
 // Class for controlling RGB LEDs with individual control
 class IRGB {
@@ -174,7 +179,7 @@ IRGB::IRGB(int address, int pinR, int pinG, int pinB) {
   pinRPriv = pinR;
   pinGPriv = pinG;
   pinBPriv = pinB;
-}
+};
 
 // Class for controlling NeoPixel RGB LEDs with Pixel Mapping
 class NeoPixel_PM_RGB {
@@ -256,55 +261,55 @@ NeoPixel_RGB::NeoPixel_RGB(int address, int pin, int pixNum, int startPix) {
   startPixPriv = startPix;
 };
 
-class Servo {
+class DMXServo {
   public:
     void begin();
     void refresh() {
-      Servo.write(map(DMXSerial.read(addressPriv),0,255,0,180));
+      Hservo->write(map(DMXSerial.read(addressPriv),0,255,0,180));
     };
-    Servo(int address, int pin, int servoMin, int servoMax);
+    DMXServo(int address, int pin, int servoMin, int servoMax);
   private:
     int addressPriv;
     int pinPriv;
-    int servoMin;
-    int servoMax;
-    Servo* servo;
-}
+    int servoMinPriv;
+    int servoMaxPriv;
+    Servo* Hservo;
+};
 
-void Servo::begin() {
-  servo = new Servo();
-  servo->attach(pinPriv);
-}
+void DMXServo::begin() {
+  Hservo = new Servo();
+  Hservo->attach(pinPriv);
+};
 
-Servo::Servo(int address, int pin, int servoMin, int servoMax) {
+DMXServo::DMXServo(int address, int pin, int servoMin, int servoMax) {
   addressPriv = address;
   pinPriv = pin;
   servoMinPriv = servoMin;
   servoMaxPriv = servoMax;
-}
+};
 
 class ServoReel {
   public:
     void begin();
     void refresh() {
-      Servo.write(map(DMXSerial.read(addressPriv),0,255,0, reelSlotsCountPriv)*((servoMaxPriv-servoMinPriv)/reelSlotsCountPriv)+adjustmentAnglePriv);
+      Rservo->write(map(DMXSerial.read(addressPriv),0,255,0, reelSlotsCountPriv)*((servoMaxPriv-servoMinPriv)/reelSlotsCountPriv)+adjustmentAnglePriv);
       //Servo.write(map(DMXSerial.read(addressPriv),0,255,0,180));
     };
     ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle);
   private:
     int addressPriv;
     int pinPriv;
-    int servoMin;
-    int servoMax;
-    int reelSlotsCount;
-    int adjustmentAngle;
-    Servo* servo;
-}
+    int servoMinPriv;
+    int servoMaxPriv;
+    int reelSlotsCountPriv;
+    int adjustmentAnglePriv;
+    Servo* Rservo;
+};
 
 void ServoReel::begin() {
-  servo = new Servo();
-  servo->attach(pinPriv);
-}
+  Rservo = new Servo();
+  Rservo->attach(pinPriv);
+};
 
 ServoReel::ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle) {
   addressPriv = address;
@@ -313,4 +318,4 @@ ServoReel::ServoReel(int address, int pin, int servoMin, int servoMax, int reelS
   servoMaxPriv = servoMax;
   reelSlotsCountPriv = reelSlotsCount;
   adjustmentAnglePriv = adjustmentAngle;
-}
+};

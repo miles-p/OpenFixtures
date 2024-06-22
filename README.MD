@@ -24,6 +24,8 @@ This project is an Arduino based lighting fixture system that provides an easy a
 
 ## How to build one
 To build a prototype of the OpenFixtures beta (which is the 4xFET controller), download the zip folder in the PCB folder, upload it to a PCB service, and get it made. Sourcing parts from [Jaycar](https://jaycar.com.au), [Core Electronics](https://core-electronics.com.au), and [Element14](https://au.element14.com) was easy for an Australian, but find any reliable source for these parts.
+
+*Note: Any model of Arduino Uno will **physically** fit on the PCB - I give no guarantee that it will work. I tested with the Arduino Uno Rev3, but I've spec'ed the Rev4 because it was cheaper from my local retailer.*
 ### Bill of Materials
 ![image](bom.png)
 ### PCB (Printed)
