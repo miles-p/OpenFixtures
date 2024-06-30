@@ -14,17 +14,44 @@
 #include <AccelStepper.h> // Include AccelStepper library
 #include "Arduino.h" // Include Arduino library
 
+int globalAddress;
+
+class Fixture {
+  public:
+    void begin();
+    void AddressAdd(int amount) {
+      globalAddress += amount;
+    };
+    void AddressSet(int newAddress) {
+      globalAddress = newAddress;
+    };
+    int AddressGet() {
+      return globalAddress;
+    }
+    Fixture::Fixture(int address);
+  private:
+    int addressPriv;
+};
+
+void Fixture::begin() {
+  globalAddress = addressPriv - 1;
+};
+
+Fixture::Fixture(int address) {
+  addressPriv = address;
+};
+
 // Class for controlling dimmers
 class SimpleDimmer {
   public:
     // Method to initialize dimmer
-    // @brief Initialize all required parts of the dimmer object. 
+    // @brief Initialize all required parts of the dimmer object.
     void begin();
 
     // @brief Method to update dimmer output based on DMX input
     void refresh() {
-      analogWrite(pinPriv, DMXSerial.read(addressPriv)); // Write DMX value to pin
-    }
+      analogWrite(pinPriv, DMXSerial.read(addressPriv+globalAddress)); // Write DMX value to pin
+    };
     SimpleDimmer(int address, int pin); // Constructor
   private:
     int addressPriv;   // DMX address of the dimmer
@@ -45,12 +72,12 @@ SimpleDimmer::SimpleDimmer(int address, int pin) {
 class RangedDimmer {
   public:
     // Method to initialize dimmer
-    // @brief Initialize all required parts of the dimmer object. 
+    // @brief Initialize all required parts of the dimmer object.
     void begin();
 
     // @brief Method to update dimmer output based on DMX input
     void refresh() {
-      analogWrite(pinPriv, map(DMXSerial.read(addressPriv), dmxLowPriv, dmxHighPriv, outputLowPriv, outputHighPriv)); // Write mapped DMX value to pin
+      analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress), dmxLowPriv, dmxHighPriv, outputLowPriv, outputHighPriv)); // Write mapped DMX value to pin
     }
     RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int outputLow, int outputHigh); // Constructor
   private:
@@ -84,7 +111,7 @@ class Relay {
     void begin();
     // Method to update relay output based on DMX input
     void refresh() {
-      if (DMXSerial.read(addressPriv) >= threshPriv) { // Check if DMX value is above threshold
+      if (DMXSerial.read(addressPriv+globalAddress) >= threshPriv) { // Check if DMX value is above threshold
         digitalWrite(pinPriv, !invertedPriv); // Activate relay
       } else {
         digitalWrite(pinPriv, invertedPriv); // Deactivate relay
@@ -119,9 +146,9 @@ class RGB {
 
     // Method to update RGB LED output based on DMX input
     void refresh() {
-      analogWrite(pinRPriv, DMXSerial.read(addressPriv)); // Write DMX value to red pin
-      analogWrite(pinGPriv, DMXSerial.read(addressPriv + 1)); // Write DMX value to green pin
-      analogWrite(pinBPriv, DMXSerial.read(addressPriv + 2)); // Write DMX value to blue pin
+      analogWrite(pinRPriv, DMXSerial.read(addressPriv + globalAddress)); // Write DMX value to red pin
+      analogWrite(pinGPriv, DMXSerial.read(addressPriv +globalAddress+ 1)); // Write DMX value to green pin
+      analogWrite(pinBPriv, DMXSerial.read(addressPriv +globalAddress+ 2)); // Write DMX value to blue pin
     }
     RGB(int address, int pinR, int pinG, int pinB); // Constructor
   private:
@@ -154,9 +181,9 @@ class IRGB {
 
     // Method to update individually controlled RGB LED output based on DMX input
     void refresh() {
-      analogWrite(pinRPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 1)); // Write scaled DMX value to red pin
-      analogWrite(pinGPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 2)); // Write scaled DMX value to green pin
-      analogWrite(pinBPriv * (DMXSerial.read(addressPriv)) / 256, DMXSerial.read(addressPriv + 3)); // Write scaled DMX value to blue pin
+      analogWrite(pinRPriv * (DMXSerial.read(addressPriv+globalAddress)) / 256, DMXSerial.read(addressPriv + 1+globalAddress)); // Write scaled DMX value to red pin
+      analogWrite(pinGPriv * (DMXSerial.read(addressPriv+globalAddress)) / 256, DMXSerial.read(addressPriv + 2+globalAddress)); // Write scaled DMX value to green pin
+      analogWrite(pinBPriv * (DMXSerial.read(addressPriv+globalAddress)) / 256, DMXSerial.read(addressPriv + 3+globalAddress)); // Write scaled DMX value to blue pin
     }
     IRGB(int address, int pinR, int pinG, int pinB); // Constructor
   private:
@@ -190,8 +217,8 @@ class NeoPixel_PM_RGB {
     // Method to update NeoPixel RGB LEDs output based on DMX input
     void refresh() {
       pixels->clear(); // Clear NeoPixel buffer
-      for (int i = startPixPriv; i < pixNumPriv+startPixPriv; i++) { // Loop through pixels
-        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read((3*i-2)+(addressPriv-1)), DMXSerial.read((3*i-1)+(addressPriv-1)), DMXSerial.read((3*i)+(addressPriv-1)))); // Set pixel color based on DMX values
+      for (int i = startPixPriv; i < pixNumPriv + startPixPriv; i++) { // Loop through pixels
+        pixels->setPixelColor(i - 1, pixels->Color(DMXSerial.read((3 * i - 2) + (addressPriv+globalAddress - 1)), DMXSerial.read((3 * i - 1) + (addressPriv+globalAddress - 1)), DMXSerial.read((3 * i) + (addressPriv+globalAddress - 1)))); // Set pixel color based on DMX values
       };
       pixels->show(); // Update NeoPixel strip
     };
@@ -229,8 +256,8 @@ class NeoPixel_RGB {
     // Method to update NeoPixel RGB LEDs output based on DMX input
     void refresh() {
       pixels->clear(); // Clear NeoPixel buffer
-      for (int i = startPixPriv; i < pixNumPriv+startPixPriv; i++) { // Loop through pixels
-        pixels->setPixelColor(i-1, pixels->Color(DMXSerial.read(1+(addressPriv-1)), DMXSerial.read(1+(addressPriv-1)), DMXSerial.read(1+(addressPriv-1)))); // Set pixel color based on DMX values
+      for (int i = startPixPriv; i < pixNumPriv + startPixPriv; i++) { // Loop through pixels
+        pixels->setPixelColor(i - 1, pixels->Color(DMXSerial.read(1 + (addressPriv+globalAddress - 1)), DMXSerial.read(1 + (addressPriv+globalAddress - 1)), DMXSerial.read(1 + (addressPriv+globalAddress - 1)))); // Set pixel color based on DMX values
       };
       pixels->show(); // Update NeoPixel strip
     };
@@ -264,7 +291,7 @@ class DMXServo {
   public:
     void begin();
     void refresh() {
-      Hservo->write(map(DMXSerial.read(addressPriv),0,255,servoMinPriv,servoMaxPriv)); // Write mapped DMX value to servo
+      Hservo->write(map(DMXSerial.read(addressPriv+globalAddress), 0, 255, servoMinPriv, servoMaxPriv)); // Write mapped DMX value to servo
     };
     DMXServo(int address, int pin, int servoMin, int servoMax); // Constructor
   private:
@@ -294,7 +321,7 @@ class ServoReel {
   public:
     void begin();
     void refresh() {
-      Rservo->write(map(DMXSerial.read(addressPriv),0,255,0, reelSlotsCountPriv)*((servoMaxPriv-servoMinPriv)/reelSlotsCountPriv)+adjustmentAnglePriv); // Write mapped DMX value to servo reel
+      Rservo->write(map(DMXSerial.read(addressPriv+globalAddress), 0, 255, 0, reelSlotsCountPriv) * ((servoMaxPriv - servoMinPriv) / reelSlotsCountPriv) + adjustmentAnglePriv); // Write mapped DMX value to servo reel
     };
     ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle); // Constructor
   private:
@@ -321,41 +348,4 @@ ServoReel::ServoReel(int address, int pin, int servoMin, int servoMax, int reelS
   servoMaxPriv = servoMax; // Set maximum servo position
   reelSlotsCountPriv = reelSlotsCount; // Set number of reel slots
   adjustmentAnglePriv = adjustmentAngle; // Set adjustment angle
-};
-
-// Class for controlling stepper motors with DMX
-class StepperMotor {
-  public:
-    void begin();
-    void refresh() {
-      int position = map(DMXSerial.read(addressPriv), 0, 255, minPositionPriv, maxPositionPriv); // Map DMX value to stepper position
-      stepper->moveTo(position); // Move stepper to position
-      stepper->run(); // Run stepper motor
-    };
-    StepperMotor(int address, int stepPin, int dirPin, int minPosition, int maxPosition, int maxSpeed, int acceleration); // Constructor
-  private:
-    int addressPriv; // DMX address
-    int stepPinPriv; // Pin connected to step
-    int dirPinPriv; // Pin connected to direction
-    int minPositionPriv; // Minimum position
-    int maxPositionPriv; // Maximum position
-    AccelStepper* stepper; // Stepper motor object
-};
-
-// Method definition to initialize stepper motor
-void StepperMotor::begin() {
-  stepper = new AccelStepper(AccelStepper::DRIVER, stepPinPriv, dirPinPriv); // Create Stepper object
-  stepper->setMaxSpeed(maxSpeedPriv); // Set maximum speed
-  stepper->setAcceleration(accelerationPriv); // Set acceleration
-};
-
-// Constructor for StepperMotor class
-StepperMotor::StepperMotor(int address, int stepPin, int dirPin, int minPosition, int maxPosition, int maxSpeed, int acceleration) {
-  addressPriv = address; // Set DMX address
-  stepPinPriv = stepPin; // Set step pin
-  dirPinPriv = dirPin; // Set direction pin
-  minPositionPriv = minPosition; // Set minimum position
-  maxPositionPriv = maxPosition; // Set maximum position
-  maxSpeedPriv = maxSpeed; // Set maximum speed
-  accelerationPriv = acceleration; // Set acceleration
 };
