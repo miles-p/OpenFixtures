@@ -4,7 +4,6 @@ Fixture fixture(1);
 
 void setup() {
   // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
 dmxservo.begin();
 fixture.begin();
 }

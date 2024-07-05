@@ -35,6 +35,7 @@ class Fixture {
 
 void Fixture::begin() {
   globalAddress = addressPriv - 1;
+  DMXSerial.init(DMXReceiver);
 };
 
 Fixture::Fixture(int address) {

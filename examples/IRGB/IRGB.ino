@@ -4,7 +4,6 @@ Fixture fixture(1);
 
 void setup() {
   // put your setup code here, to run once:
-  DMXSerial.init(DMXReceiver);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);

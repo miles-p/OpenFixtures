@@ -3,8 +3,6 @@ NeoPixel_PM_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 celled fixture, 1st ce
 Fixture fixture(1);
 
 void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
 neo.begin();
 fixture.begin();
 }
