@@ -11,7 +11,6 @@
 #include <DMXSerial.h> // Include DMXSerial library
 #include <Adafruit_NeoPixel.h> // Include Adafruit NeoPixel library
 #include <Servo.h> // Include Servo library
-#include <AccelStepper.h> // Include AccelStepper library
 #include "Arduino.h" // Include Arduino library
 
 int globalAddress;

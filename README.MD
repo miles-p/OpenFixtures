@@ -31,137 +31,127 @@ To build a prototype of the OpenFixtures beta (which is the 4xFET controller), d
 ### PCB (Printed)
 ![image](pcb_print.png)
 
+## How to code an OpenFixture
+### Starting code
+```
+#include <OpenFixtures.h>
+
+Fixture myFixture(1);
+
+void setup() {
+  fixture.begin();
+}
+
+void loop() {
+
+}
+```
+### Adding a "function" to the Fixture
+To add a function to the fixture, go to the fixture definition, as written below, and copy it *after* the `Fixture myFixture(1);` line, which instantiates the function.
+Then, add the object of the function to the `setup` object, then add `.begin();` to begin the function object. After this, add the function object to the `loop` object, with `.refresh();` after this. This calls the function to refresh itself against the DMX signal. Upload the code to the board, and connect the DMX via an RS485 $\rightarrow$ TTL board.
 ## Examples
 ### Dimmer Channels
+#### SimpleDimmer
 ```
-#include <OpenFixtures.h>   // Import my library
-Dimmer dimmer1(1, 6);   // Address 1 and pin 6
-
-void setup() {
-DMXSerial.init(DMXReceiver);   // This bit is kinda magic and if you ignore it, everything works fine!
-dimmer1.begin();   // Initialize the dimmer object.
-}
-
-void loop() {
-dimmer1.refresh();
-}
+Fixture Definition:
+SimpleDimmer dimmer(1, 6);
+1: Address
+2: Arduino Pin (Ensure that you're using a PWM-enabled pin)
 ```
 
-This code creates a single Dimmer Object called dimmer1 that takes the DMX address from address 1, and forwards the value onto Digital Pin 6. This is now a simple and straight-forward process for the maker.
+This code creates a single Dimmer Object called dimmer1 that takes the DMX address from a DMX address, and forwards the value onto a PWM pin. This is now a simple and straight-forward process for the maker.
+#### RangedDimmer
+```
+Fixture Definition:
+RangedDimmer dimmer(1, 6, 0, 50, 0, 128);
+1: Address
+2: Arduino Pin (Ensure that you're using a PWM-enabled pin)
+3: DMX Low
+4: DMX High
+5: Output Low
+6: Output High
+```
+This is a ranged dimmer, meaning you can change the high and low range for both the DMX input and physical 10-bit output.
 ### Relay Channels
 ```
-#include <OpenFixtures.h>   // Import my library
-Relay relay1(1, 6, 128, false);   // Address 1, pin 6, trigger threshold 128/256, turn ON at threshold
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-relay1.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-relay1.refresh();
-}
-
+Fixture Definition:
+Relay relay(1, 6, 128, false);
+1: Address
+2: Arduino Pin (Ensure that you're using a PWM-enabled pin)
+3: Threshold
+4: Logic inversion
 ```
-
 This code creates a single Relay Object called relay1 that takes the DMX address from address 1, and forwards the value onto Digital Pin 6, provided that it's value is above or equal to 128/256, keeping in mind that the **inverted** flag is false; if it were true; this logic would be inverted. This is now a simple and straight-forward process for the maker. This doesn't have to be a relay, rather it can be any binary input device, such as an object you want to turn on instantly, such as motor with no speed control other than on/off.
 
 ### RGB
 ```
-#include <OpenFixtures.h>   // Import my library
-RGB rgb1(1, 6, 7, 8);   // Address 1, pin 6-8 (for Red, Green, Blue)
-// DANGER: only use arduino pins that fully support PWM so that you have a fun time with colour dimming.
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-rgb1.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-rgb1.refresh();
-}
-
+Fixture Definition:
+RGB rgb(1, 6, 7, 8);
+1: Address
+2: Red Pin (Ensure that you're using a PWM-enabled pin)
+3: Green Pin
+4: Blue Pin
 ```
 If you've followed along so far (good on you), you will be able to read this like it's English (oder Deutsch) now. That's the very point of this project. This is for RGB with no intensity channel in the DMX layout.
 
 ### IRGB
 ```
-#include <OpenFixtures.h>   // Import my library
-IRGB irgb1(1, 6, 7, 8);   // Address 1, pin 6-8 (for Red, Green, Blue)
-// DANGER: only use arduino pins that fully support PWM so that you have a fun time with colour dimming.
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-irgb1.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-irgb1.refresh();
-}
-
+Fixture Definition:
+IRGB irgb(1, 6, 7, 8);
+1: Address
+2: Red Pin (Ensure that you're using a PWM-enabled pin)
+3: Green Pin
+4: Blue Pin
 ```
 Again, this is the IRGB fixture profile, with a very simple initialization alike the RGB profile. Great! This now has an intensity channel in the DMX that allows cheaper controllers to have better control of these fixtures.
 
 ### NeoPixel/WS2812/WS2812B (Pixel Mapped & RGB)
 ```
-#include <OpenFixtures.h>   // Import my library
-NeoPixel_PM_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 celled fixture, 1st cell onwards (this is not zero indexed)
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-neo.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-neo.refresh();
-}
+Fixture Definition:
+NeoPixel_PM_RGB neo(1, 6, 8, 1);
+1: Address
+2: NeoPixel Pin
+3: Number of Pixels
+4: Starting pixel
 ```
 This is where things both get funky and strange at the same time.
 This is the NeoPixel and WS2812 class for Pixel Map RGB fixtures where you have many pixels in a strip. This is definitely the coolest fixture (yet) that will probably be the most used fixture type for DIY fixtures.
 
 ### NeoPixel/WS2812/WS2812B (**Non**-Pixel Mapped & RGB)
 ```
-#include <OpenFixtures.h>   // Import my library
-NeoPixel_RGB neo(1, 6, 8, 1);   // Address 1, pin 6, 8 proceeding cells into 1 fixture, 1st cell onwards (this is not zero indexed)
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-neo.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-neo.refresh();
-}
+Fixture Definition:
+NeoPixel_RGB neo(1, 6, 8, 1);
+1: Address
+2: NeoPixel Pin
+3: Number of Pixels
+4: Starting pixel
 ```
 This is the same as the NeoPixel sketch as written above, however with the twist that this doesn't pixel map the cells of the NeoPixel, rather treats a strip as one fixture. It still requires a start and end pixel, so a strip can be broken up into a compound multi-fixture arrangement. It's very complex, but this is the most flexible option.
 
 ### Servo Motors
+#### "Simple" Servo
 ```
-#include <OpenFixtures.h>   // Import my library
-Servo servo(1, 6, 0, 180);   // Address 1, pin 6, between 0 and 180 degrees (this is the full range with most servos)
-
-void setup() {
-  // put your setup code here, to run once:
-DMXSerial.init(DMXReceiver);
-servo.begin();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-servo.refresh();
-}
+Fixture Definition:
+DMXServo servo(1, 6, 0, 180);
+1: Address
+2: Servo Pin
+3: Servo Minimum
+4: Servo Maximum
 ```
 This is the control structure for controlling Servo Motors from OpenFixtures given a full range of the servo, where the administrator can change the full range of the servo in runtime. This allows for moving head/gobo/color wheel movement within OpenFixtures.
+
+#### Servo Reel
+```
+Fixture Definition:
+DMXServo servo(1, 6, 0, 180, 6, 0);
+1: Address
+2: Servo Pin
+3: Servo Minimum
+4: Servo Maximum
+5: Number of "slots"
+6: Adjustment angle
+```
+DMX controlled Servo that is broken up into a discrete steps, designed for gobos or gels, perhaps. This is helpful with the additon of the Adjustment Angle (essentially the $ + c$, for the calculus folk).
 ## FixtureCreator
 In this GitHub folder, you will see a python script in FixtureCreatorBeta/creator.py that gives you access  to the beta of the Arduino script creator for OpenFixtures. Experiment at your own risk. It's kinda cool I guess.
 
@@ -184,3 +174,5 @@ Please do. It would be incredible if you forked the project to add any cool feat
 - Send me an email about how you used my code/designs.
 - Use responsibly and avoid being evil.
 - Buy me a coffee, maybe?
+- Star the project on GitHub
+- Follow me on Instagram. @open_fixtures
