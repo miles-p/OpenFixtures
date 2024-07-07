@@ -1,7 +1,8 @@
 /*
   OpenFixtures - by Miles Punch
   An open-source framework for building intelligent lighting fixtures from scratch.
-  GitHub Repository: https://github.com/miles-p/OpenFixtures
+  GitHub Repository:  https://github.com/miles-p/OpenFixtures
+  Instagram:          https://instagram.com/open_fixtures
 */
 
 #ifndef OpenFixtures
@@ -26,6 +27,9 @@ class Fixture {
     };
     int AddressGet() {
       return globalAddress;
+    }
+    void refresh() {
+      //This will do nothing, but needs to be declared for the sake of needing to be declared (to uphold the norm)
     }
     Fixture::Fixture(int address);
   private:

@@ -152,6 +152,16 @@ DMXServo servo(1, 6, 0, 180, 6, 0);
 6: Adjustment angle
 ```
 DMX controlled Servo that is broken up into a discrete steps, designed for gobos or gels, perhaps. This is helpful with the additon of the Adjustment Angle (essentially the $ + c$, for the calculus folk).
+
+### Fixture Controls
+The `Fixture` object in the OpenFixtures project is able to control the fixture and it's parts, such as the DMX Address. You can do this with the following code:
+#### `fixture.AddressAdd(value)`
+- Adds `value` to the DMX Address. Good for making a UI that allows you to control the Address without needing to re-upload.
+#### `fixture.AddressSet(value)`
+- Sets `value` to the DMX Address, which is even easier for making a UI, which is very useful for creating the **entire** fixture, which is what OpenFixtures is all about.
+#### `fixture.AddressGet()`
+- Returns the current DMX Address. Again, useful for making a UI for the fixture, with perhaps a display, and EEPROM non-volatile memory.
+
 ## FixtureCreator
 In this GitHub folder, you will see a python script in FixtureCreatorBeta/creator.py that gives you access  to the beta of the Arduino script creator for OpenFixtures. Experiment at your own risk. It's kinda cool I guess.
 

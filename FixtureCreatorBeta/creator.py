@@ -3,32 +3,38 @@ library = "#import <OpenFixtures.h>"
 
 # Descriptions of different types of fixtures
 fixturesDesc = [
+    "Fixture (You MUST define one fixture. Only one!)",
     "Dimmer (Analog 1ch Control)",                   # Dimmer with 1 channel analog control
     "RGB (Analog 3ch Control)",                      # RGB light with 3 channel analog control
     "IRGB (Analog 4ch Control)",                     # IRGB light with 4 channel analog control
     "Relay (Binary Control with Threshold and Inversion)",  # Relay with binary control including threshold and inversion settings
     "NeoPixel (Digital 1-pin RGB Pixel Control)",    # NeoPixel with digital 1-pin RGB pixel control
-    "Servo (PWM 1-pin Servo Motor)"
+    "Servo (PWM 1-pin Servo Motor)",
+    "Servo Reel (For Gobo's or Gels)"
 ]
 
 # Settings required for each type of fixture
 fixturesSettings = [
+    "Address (1-512)",
     "Address (1-512),Pin",                                   # Settings for Dimmer
     "Address (1-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for RGB
     "Address (1-512),Pin (Red),Pin (Blue),Pin (Green)",      # Settings for IRGB
     "Address (1-512),Pin,Threshold (0-256),Inversion (true/false)",  # Settings for Relay
     "Address (1-512),Pin,Number of Cells,Starting Cell",     # Settings for NeoPixel
     "Address (1-512),Pin,Minimum Servo Angle, Maximum Servo Angle"
+    "Address (1-512,Pin,Minimum Servo Angle, Maximum Servo Angle, Number of Cells, Adjustment Angle)"
 ]
 
 # Fixture classes corresponding to each fixture type
 fixtureClasses = [
-    "Dimmer",            # Class for Dimmer
+    "Fixture",
+    "SimpleDimmer",            # Class for Dimmer
     "RGB",               # Class for RGB
     "IRGB",              # Class for IRGB
     "Relay",             # Class for Relay
     "NeoPixel_PM_RGB",   # Class for NeoPixel
-    "Servo"
+    "Servo",
+    "Servo_Reel"
 ]
 
 # Initialize a 10x1 matrix to store fixtures' settings
@@ -85,14 +91,14 @@ while True:
 # Loop through the configured fixtures and generate init code for each
 for i in range(fixNum):
     # Create an initialization string for each fixture
-    init.append(fixtureClasses[int(fixtures[i][0])-1]+" Fixture"+str(i)+"("+str(",".join(map(str,fixtures[i][1:])))+");\n")
+    init.append(fixtureClasses[int(fixtures[i][0])-1]+" Function"+str(i)+"("+str(",".join(map(str,fixtures[i][1:])))+");\n")
 
 for i in range(fixNum):
-    setup.append("Fixture"+str(i)+".begin();\n")
+    setup.append("Function"+str(i)+".begin();\n")
 
 for i in range(fixNum):
-    loop.append("Fixture"+str(i)+".refresh();\n")
+    loop.append("Function"+str(i)+".refresh();\n")
 
 # Print the generated initialization code
-code = importer+''.join(map(str,init))+ 'void setup() { \n'+''.join(map(str,setup))+'DMXSerial.init(DMXReceiver);\n}\n'+'void loop() {\n'+''.join(map(str,loop))+'}\n'
+code = importer+''.join(map(str,init))+ 'void setup() { \n'+''.join(map(str,setup))+'void loop() {\n'+''.join(map(str,loop))+'}\n'
 print(code)
