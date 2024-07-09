@@ -66,10 +66,10 @@ Fixture Definition:
 RangedDimmer dimmer(1, 6, 0, 50, 0, 128);
 1: Address
 2: Arduino Pin (Ensure that you're using a PWM-enabled pin)
-3: DMX Low
-4: DMX High
-5: Output Low
-6: Output High
+3: DMX Low (between 0 and 1023)
+4: DMX High (between 0 and 1023)
+5: Output Low (between 0 and 1023)
+6: Output High (between 0 and 1023)
 ```
 This is a ranged dimmer, meaning you can change the high and low range for both the DMX input and physical 10-bit output.
 ### Relay Channels

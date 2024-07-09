@@ -65,12 +65,12 @@ class SimpleDimmer {
 // Method definition to initialize dimmer pin
 void SimpleDimmer::begin() {
   pinMode(pinPriv, OUTPUT); // Set pin as output
-};
+}
 // Constructor for Dimmer class
 SimpleDimmer::SimpleDimmer(int address, int pin) {
   addressPriv = address; // Set DMX address
   pinPriv = pin; // Set pin
-};
+}
 
 // Class for controlling dimmers
 class RangedDimmer {
@@ -81,8 +81,14 @@ class RangedDimmer {
 
     // @brief Method to update dimmer output based on DMX input
     void refresh() {
-      analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress), dmxLowPriv, dmxHighPriv, outputLowPriv, outputHighPriv)); // Write mapped DMX value to pin
-    }
+      if (DMXSerial.read(addressPriv+globalAddress) <= dmxLowPriv) {
+        analogWrite(pinPriv, 0);
+      }
+      if (DMXSerial.read(addressPriv+globalAddress) >= dmxHighPriv) {
+        analogWrite(pinPriv, 1023);
+      }
+        analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress), dmxLowPriv, dmxHighPriv, outputLowPriv, outputHighPriv)); // Write mapped DMX value to pin
+    };
     RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int outputLow, int outputHigh); // Constructor
   private:
     int addressPriv;   // DMX address of the dimmer
@@ -96,7 +102,7 @@ class RangedDimmer {
 // Method definition to initialize dimmer pin
 void RangedDimmer::begin() {
   pinMode(pinPriv, OUTPUT); // Set pin as output
-};
+}
 
 // Constructor for Dimmer class
 RangedDimmer::RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int outputLow, int outputHigh) {
@@ -106,7 +112,7 @@ RangedDimmer::RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int ou
   dmxHighPriv = dmxHigh; // Set DMX high range
   outputLowPriv = outputLow; // Set output low range
   outputHighPriv = outputHigh; // Set output high range
-};
+}
 
 // Class for controlling relays
 class Relay {
