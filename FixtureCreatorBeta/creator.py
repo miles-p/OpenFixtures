@@ -10,7 +10,8 @@ fixturesDesc = [
     "Relay (Binary Control with Threshold and Inversion)",  # Relay with binary control including threshold and inversion settings
     "NeoPixel (Digital 1-pin RGB Pixel Control)",    # NeoPixel with digital 1-pin RGB pixel control
     "Servo (PWM 1-pin Servo Motor)",
-    "Servo Reel (For Gobo's or Gels)"
+    "Servo Reel (For Gobo's or Gels)",
+    "Strobe (Flickery lights go brrrr)"
 ]
 
 # Settings required for each type of fixture
@@ -22,7 +23,8 @@ fixturesSettings = [
     "Address (1-512),Pin,Threshold (0-256),Inversion (true/false)",  # Settings for Relay
     "Address (1-512),Pin,Number of Cells,Starting Cell",     # Settings for NeoPixel
     "Address (1-512),Pin,Minimum Servo Angle, Maximum Servo Angle"
-    "Address (1-512,Pin,Minimum Servo Angle, Maximum Servo Angle, Number of Cells, Adjustment Angle)"
+    "Address (1-512,Pin,Minimum Servo Angle, Maximum Servo Angle, Number of Cells, Adjustment Angle)",
+    "Address (1-512),Pin,Fastest Delay,Slowest Delay,Highest Value,Lowest Value"
 ]
 
 # Fixture classes corresponding to each fixture type
@@ -34,7 +36,8 @@ fixtureClasses = [
     "Relay",             # Class for Relay
     "NeoPixel_PM_RGB",   # Class for NeoPixel
     "Servo",
-    "Servo_Reel"
+    "Servo_Reel",
+    "Strobe"
 ]
 
 # Initialize a 10x1 matrix to store fixtures' settings
