@@ -61,7 +61,7 @@ SimpleDimmer dimmer(1, 6);
 
 This code creates a single Dimmer Object called dimmer1 that takes the DMX address from a DMX address, and forwards the value onto a PWM pin. This is now a simple and straight-forward process for the maker.
 
-#### Strobe
+#### Standard Strobe
 ```
 Fixture Definition:
 Strobe strobe(1, 6, 10, 1000, 1023, 0);
@@ -73,7 +73,26 @@ Strobe strobe(1, 6, 10, 1000, 1023, 0);
 6: Lowest Value to write (Raw Arduino Value)
 ```
 
-This code creates a strobe that strobes an Arduino pin that controls the pin between different strobing frequencies. These timings are in Period, so to convert:$\frac{1000}{\text{Hz}}=T\,\,\text{(Period)}$. When the DMX value is 0, it will disable the strobe effect.
+This code creates a strobe that strobes an Arduino pin that controls the pin between different strobing frequencies. The strobe's total intensity is controlled by the second address. These timings are in Period, so to convert:$\frac{1000}{\text{Hz}}=T\,\,\text{(Period)}$. When the DMX value is 0, it will disable the strobe effect.
+
+#### Intensity Controlled Strobe
+```
+Fixture Definition:
+IntStrobe strobe(1, 6, 10, 1000, 1023, 0);
+1: Address
+2: Arduino Pin
+3: Fastest (Period)
+4: Slowest (Period)
+5: Highest Value to write (Raw Arduino Value)
+6: Lowest Value to write (Raw Arduino Value)
+```
+
+This strobe is different, in that it will uses a different DMX control structure to strobe. The DMX control table is below:
+| DMX Address (Relative to GlobalAddress) | Function                 |
+|-----------------------------------------|--------------------------|
+| 1                                       | Intensity at peak strobe |
+| 2                                       | Strobe frequency         | 
+
 
 #### RangedDimmer (**Currently a bit buggered**)
 ```

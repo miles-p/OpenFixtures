@@ -119,6 +119,53 @@ Strobe::Strobe(int address, int pin, int slowest, int fastest, int levelOn, int 
   levelOffPriv = levelOff;
 };
 
+class IntStrobe {
+  public:
+    unsigned long millisPrev;
+    unsigned long millisCurr;
+    int interval;
+    void begin();
+    void refresh() {
+      millisCurr = millis();
+      if (DMXSerial.read(addressPriv+globalAddress) == 0) {
+        analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress+1),0,1023,0,levelOnPriv));
+      } else {
+          interval = map(DMXSerial.read(addressPriv+globalAddress), 0, 1023, slowestPriv, fastestPriv);
+          if (millisCurr - millisPrev >= interval) {
+            millisPrev = millisCurr;
+            if (statePriv) {
+              analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress+1),0,1023,0,levelOnPriv));
+            } else {
+              digitalWrite(pinPriv, levelOffPriv);
+            };
+            statePriv = !statePriv;
+    }}};
+    IntStrobe(int address, int pin, int fastest, int slowest, int levelOn, int levelOff);
+  private:
+    int addressPriv;
+    int pinPriv;
+    int slowestPriv;
+    int fastestPriv;
+    int levelOnPriv;
+    int levelOffPriv;
+    bool statePriv;
+};
+
+void IntStrobe::begin() {
+  pinMode(pinPriv, OUTPUT);
+  statePriv = true;
+  millisPrev = 0;
+};
+
+IntStrobe::IntStrobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff) {
+  addressPriv = address;
+  pinPriv = pin;
+  slowestPriv = slowest;
+  fastestPriv = fastest;
+  levelOnPriv = levelOn;
+  levelOffPriv = levelOff;
+};
+
 // Class for controlling dimmers
 class RangedDimmer {
   public:
