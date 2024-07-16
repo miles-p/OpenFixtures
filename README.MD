@@ -1,4 +1,4 @@
-![image](full_grey.png)
+![image](https://openfixtures.punchav.com/full_grey.png)
 ## Statement of Intent
 This project is an Arduino based lighting fixture system that provides an easy and achievable to make a lighting fixture from scratch. This will be simple to use, and will be able to make complex fixtures, such as Dimmer channels, Relay channels, and later down the track, color and position controls. This will be great for the experimentalist lighting designer with a great idea for a custom fixture Martin won't make, or a cool DMX controlled thingamabob that Ayrton don't have planned yet.
 
