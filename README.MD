@@ -71,9 +71,11 @@ Strobe strobe(1, 6, 10, 1000, 1023, 0);
 4: Slowest (Period)
 5: Highest Value to write (Raw Arduino Value)
 6: Lowest Value to write (Raw Arduino Value)
+7: Lower boundary snap (Bool)
+8: High boundary snap (Bool)
 ```
 
-This code creates a strobe that strobes an Arduino pin that controls the pin between different strobing frequencies. The strobe's total intensity is controlled by the second address. These timings are in Period, so to convert:$\frac{1000}{\text{Hz}}=T\,\,\text{(Period)}$. When the DMX value is 0, it will disable the strobe effect.
+This code creates a strobe that strobes an Arduino pin that controls the pin between different strobing frequencies. The strobe's total intensity is controlled by the second address. These timings are in Period, so to convert:$\frac{1000}{\text{Hz}}=T\,\,\text{(Period)}$. When the DMX value is 0, it will disable the strobe effect. When lower and/or higher boundary are `true`, the DMX Values for low and high become a solid on/off.
 
 #### Intensity Controlled Strobe
 ```
@@ -85,6 +87,8 @@ IntStrobe strobe(1, 6, 10, 1000, 1023, 0);
 4: Slowest (Period)
 5: Highest Value to write (Raw Arduino Value)
 6: Lowest Value to write (Raw Arduino Value)
+7: Lower boundary snap (Bool)
+8: High boundary snap (Bool)
 ```
 
 This strobe is different, in that it will uses a different DMX control structure to strobe. The DMX control table is below:
@@ -92,6 +96,8 @@ This strobe is different, in that it will uses a different DMX control structure
 |-----------------------------------------|--------------------------|
 | 1                                       | Intensity at peak strobe |
 | 2                                       | Strobe frequency         | 
+
+When the DMX value is 0, it will disable the strobe effect. When lower and/or higher boundary are `true`, the DMX Values for low and high become a solid on/off.
 
 
 #### RangedDimmer (**Currently a bit buggered**)

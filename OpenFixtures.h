@@ -80,8 +80,10 @@ class Strobe {
     void begin();
     void refresh() {
       millisCurr = millis();
-      if (DMXSerial.read(addressPriv+globalAddress) == 0) {
+      if (DMXSerial.read(addressPriv+globalAddress) == 0 && highOnPriv) {
         digitalWrite(pinPriv, levelOnPriv);
+      } else if (DMXSerial.read(addressPriv+globalAddress) >= 255 && lowOffPriv) {
+        digitalWrite(pinPriv, levelOffPriv);
       } else {
           interval = map(DMXSerial.read(addressPriv+globalAddress), 0, 1023, slowestPriv, fastestPriv);
           if (millisCurr - millisPrev >= interval) {
@@ -93,7 +95,7 @@ class Strobe {
             };
             statePriv = !statePriv;
     }}};
-    Strobe(int address, int pin, int fastest, int slowest, int levelOn, int levelOff);
+    Strobe(int address, int pin, int fastest, int slowest, int levelOn, int levelOff, bool lowOff, bool highOn);
   private:
     int addressPriv;
     int pinPriv;
@@ -101,6 +103,8 @@ class Strobe {
     int fastestPriv;
     int levelOnPriv;
     int levelOffPriv;
+    bool lowOffPriv;
+    bool highOnPriv;
     bool statePriv;
 };
 
@@ -110,13 +114,15 @@ void Strobe::begin() {
   millisPrev = 0;
 };
 
-Strobe::Strobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff) {
+Strobe::Strobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff, bool lowOff, bool highOn) {
   addressPriv = address;
   pinPriv = pin;
   slowestPriv = slowest;
   fastestPriv = fastest;
   levelOnPriv = levelOn;
   levelOffPriv = levelOff;
+  lowOffPriv = lowOff;
+  highOnPriv = highOn;
 };
 
 class IntStrobe {
@@ -127,8 +133,10 @@ class IntStrobe {
     void begin();
     void refresh() {
       millisCurr = millis();
-      if (DMXSerial.read(addressPriv+globalAddress) == 0) {
+      if (DMXSerial.read(addressPriv+globalAddress) == 0 && highOnPriv) {
         analogWrite(pinPriv, map(DMXSerial.read(addressPriv+globalAddress+1),0,1023,0,levelOnPriv));
+      } else if (DMXSerial.read(addressPriv+globalAddress) >= 255 && lowOffPriv) {
+        digitalWrite(pinPriv, levelOffPriv);
       } else {
           interval = map(DMXSerial.read(addressPriv+globalAddress), 0, 1023, slowestPriv, fastestPriv);
           if (millisCurr - millisPrev >= interval) {
@@ -140,7 +148,7 @@ class IntStrobe {
             };
             statePriv = !statePriv;
     }}};
-    IntStrobe(int address, int pin, int fastest, int slowest, int levelOn, int levelOff);
+    IntStrobe(int address, int pin, int fastest, int slowest, int levelOn, int levelOff, bool lowOff, bool highOn);
   private:
     int addressPriv;
     int pinPriv;
@@ -148,6 +156,8 @@ class IntStrobe {
     int fastestPriv;
     int levelOnPriv;
     int levelOffPriv;
+    bool lowOffPriv;
+    bool highOnPriv;
     bool statePriv;
 };
 
@@ -157,13 +167,15 @@ void IntStrobe::begin() {
   millisPrev = 0;
 };
 
-IntStrobe::IntStrobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff) {
+IntStrobe::IntStrobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff, bool lowOff, bool highOn) {
   addressPriv = address;
   pinPriv = pin;
   slowestPriv = slowest;
   fastestPriv = fastest;
   levelOnPriv = levelOn;
   levelOffPriv = levelOff;
+  lowOffPriv = lowOff;
+  highOnPriv = highOn;
 };
 
 // Class for controlling dimmers
