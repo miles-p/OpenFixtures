@@ -64,7 +64,7 @@ This code creates a single Dimmer Object called dimmer1 that takes the DMX addre
 #### Standard Strobe
 ```
 Fixture Definition:
-Strobe strobe(1, 6, 10, 1000, 1023, 0);
+Strobe strobe(1, 6, 10, 1000, 1023, 0, true, true);
 1: Address
 2: Arduino Pin
 3: Fastest (Period)
@@ -80,7 +80,7 @@ This code creates a strobe that strobes an Arduino pin that controls the pin bet
 #### Intensity Controlled Strobe
 ```
 Fixture Definition:
-IntStrobe strobe(1, 6, 10, 1000, 1023, 0);
+IntStrobe strobe(1, 6, 10, 1000, 1023, 0, true, true);
 1: Address
 2: Arduino Pin
 3: Fastest (Period)
