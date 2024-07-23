@@ -1,14 +1,15 @@
 #include <OpenFixtures.h>
-IRGB irgb(1, 5, 6, 7);
+Strobe strobe(1, 6, 10, 1000, 1023, 0, true, true);
 Fixture fixture(1);
 
 void setup() {
   // put your setup code here, to run once:
-  rgb1.begin(); // Assuming pin 6 for Red, pin 7 for Green, and pin 8 for Blue
+
+  strobe.begin();
   fixture.begin();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  rgb1.refresh();
+  strobe.refresh();
 }
