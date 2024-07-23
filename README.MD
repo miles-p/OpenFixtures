@@ -201,7 +201,7 @@ DMXServo servo(1, 6, 0, 180, 6, 0);
 5: Number of "slots"
 6: Adjustment angle
 ```
-DMX controlled Servo that is broken up into a discrete steps, designed for gobos or gels, perhaps. This is helpful with the additon of the Adjustment Angle (essentially the $ + c$, for the calculus folk).
+DMX controlled Servo that is broken up into a discrete steps, designed for gobos or gels, perhaps. This is helpful with the additon of the Adjustment Angle (essentially the $ + c $ , for the calculus folk).
 
 ### Fixture Controls
 The `Fixture` object in the OpenFixtures project is able to control the fixture and it's parts, such as the DMX Address. You can do this with the following code:
