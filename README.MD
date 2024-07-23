@@ -27,10 +27,20 @@ To build a prototype of the OpenFixtures beta (which is the 4xFET controller), d
 
 *Note: Any model of Arduino Uno will **physically** fit on the PCB - I give no guarantee that it will work. I tested with the Arduino Uno Rev3, but I've spec'ed the Rev4 because it was cheaper from my local retailer.*
 ### Bill of Materials
-![image](bom.png)
-### PCB (Printed)
-![image](pcb_print.png)
-
+| Item Name | Item Ref (From Manufacturer) | Quantity |
+|-----------|------------------------------|----------|
+|PCB|*Download from GitHub*|1|
+|NC5FAH (Neutrik Connector, 5 Pins, Female, Right Angle, PCB)|020418 (Element14)|1|
+|NC5MAH (Neutrik Connector, 5 Pins, Male, Right Angle, PCB)|8020396 (Element14)|1|
+|NC3FAH (Neutrik Connector, 3 Pins, Female, Right Angle, PCB)|724518 (Element14)|1|
+|NC3MAH (Neutrik Connector, 3 Pins, Male, Right Angle, PCB)|7244543 (Element14)|1|
+|Arduino Uno R3 (R4 also supported)|XC9210 (Jaycar)|1|
+|MAX485 TTL-UART|CE05154 (Core Electronics)|1|
+|Screw Terminals (2-pin)|HM3172 (Jaycar)|6|
+|Micro Slide Switch|SS0834 (Jaycar)|2|
+|2.54mm Male Strip (40-pin)|HM3212 (Jaycar)|1|
+|1N5408 3A Diode|ZR1018 (Jaycar)|2|
+|LM7809 9V Regulator **(Ensure your Arduino accepts the voltage you feed it! Most will take 9V, however if you don't feed it 9V, it won't output ANY voltage, and thus you must use a VREG that outputs enough voltage for your MCU.)**|ZV1509 (Jaycar)|1|
 ## How to code an OpenFixture
 ### Starting code
 ```
