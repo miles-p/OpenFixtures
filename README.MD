@@ -22,7 +22,7 @@ This project is an Arduino based lighting fixture system that provides an easy a
 - File > Examples > OpenFixtures > *example to load*
 6. Use Ctrl-U to upload to the board. Note that in most cases, the RS485 $\rightarrow$ Arduino connection must be removed while uploading to ensure the comms bus works properly. This can be avoided by using the Arduino Leonardo which has the seperate USB buses, but that is yet untested, so try it at your own discretion.
 
-## How to build one
+## How to build an OpenFixtures 4xFET
 To build a prototype of the OpenFixtures beta (which is the 4xFET controller), download the zip folder in the PCB folder, upload it to a PCB service, and get it made. Sourcing parts from [Jaycar](https://jaycar.com.au), [Core Electronics](https://core-electronics.com.au), and [Element14](https://au.element14.com) was easy for an Australian, but find any reliable source for these parts.
 
 *Note: Any model of Arduino Uno will **physically** fit on the PCB - I give no guarantee that it will work. I tested with the Arduino Uno Rev3, but I've spec'ed the Rev4 because it was cheaper from my local retailer.*
@@ -41,6 +41,14 @@ To build a prototype of the OpenFixtures beta (which is the 4xFET controller), d
 |2.54mm Male Strip (40-pin)|HM3212 (Jaycar)|1|
 |1N5408 3A Diode|ZR1018 (Jaycar)|2|
 |LM7809 9V Regulator **(Ensure your Arduino accepts the voltage you feed it! Most will take 9V, however if you don't feed it 9V, it won't output ANY voltage, and thus you must use a VREG that outputs enough voltage for your MCU.)**|ZV1509 (Jaycar)|1|
+
+### Board Specific Information
+|Channel|Pin|
+|--|--|
+|Channel 1|6|
+|Channel 2|9|
+|Channel 3|10|
+|Channel 4|11|
 ## How to code an OpenFixture
 ### Starting code
 ```
