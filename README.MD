@@ -46,10 +46,10 @@ To build a prototype of the OpenFixtures beta (which is the 4xFET controller), d
 ### Board Specific Information
 |Channel|Pin|
 |--|--|
-|Channel 1|11|
-|Channel 2|10|
-|Channel 3|9|
-|Channel 4|6|
+|Channel 1|6|
+|Channel 2|9|
+|Channel 3|10|
+|Channel 4|11|
 ## How to code an OpenFixture
 ### Starting code
 ```
