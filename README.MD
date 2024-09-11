@@ -10,6 +10,8 @@ This project is an Arduino based lighting fixture system that provides an easy a
 4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting *[UPDATE: Not yet. Can't figure it out...]*
 5. ~~PCB Support with a custom OpenFixtures PCB.~~ This would theoretically be many different models of fixtures that feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. These would be the products associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable. *[UPDATE: Version 1 of the PCB is in design and does exist in beta. First prototypes available soon.]*
 6. Open Lighting Project/Open Fixture Library support. This was pointed out by a member of [r/lightingdesign](https://reddit.com/lightingdesign) that OLP/OFL would be an efficient way to assist LD's to make and use OpenFixtures. It's on the roadmap now, hopefully a tool could be made within a few months, we'll see. It's going to be more efficient for us all to collaborate to make sure that this project gets to fruition. I would rather not re-invent the wheel.
+7. FastLED NeoFetch. I'm currently having latency issues with WS2812 strips as they get longer. I'll fix it, but it may mean migrating away from Adafruit's library, and to the FastLED library. Will this work? I dunno‽
+8. Generic UI. I love the SSD1306 display for it's price and it's reputability for ease of use, so I'll probably build a generic UI for OpenFixtures that **just works.** This will be the uniting force that means that OpenFixtures can become reputable. Let's give it a try!
 
 ## Installation
 **This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
@@ -245,6 +247,9 @@ Please do. It would be incredible if you forked the project to add any cool feat
 - Buy me a coffee, maybe?
 - Star the project on GitHub
 - Follow me on Instagram. @open_fixtures
+
+## References and other people's work I used
+OpenFixtures relies on the awesome work of Matthias Hertel ([his GH here](https://github.com/mathertel/)) and his [DMXSerial library](https://github.com/mathertel/DMXSerial). Matthias, if you ever read this, you're awesome! I'd love to buy you a beer.
 
 ## About the author
 ### Miles Punch (he/him)
