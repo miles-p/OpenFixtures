@@ -9,7 +9,7 @@ This project is an Arduino based lighting fixture system that provides an easy a
 3. ~~Custom fixture maker tool~~ that is able to export both OpenFixtures code, and .GDTF files, meaning the LD can rest easy integrating custom lights onto robust, existing controllers, such as MA, Eos, Onyx, and ChamSys. This support will not be extended to all controllers, but where applicable, I will definitely attempt to make sure these formats such as .GDTF will be useful. *[UPDATE: Python based code generator now exists: GTDF and other not yet, however they'll be here when I can get around to them.]*
 4. WDMX support for generic WDMX receivers, such as WDMXTRXII boards from Event Lighting *[UPDATE: Not yet. Can't figure it out...]*
 5. ~~PCB Support with a custom OpenFixtures PCB.~~ This would theoretically be many different models of fixtures that feature a FET-driver for 12V controls, a Servo driver, and maybe an RGB LED Controller. These would be the products associated with the project intended for a custom lighting fixture that can be reliable as well as repairable, customisable, and affordable. *[UPDATE: Version 1 of the PCB is in design and does exist in beta. First prototypes available soon.]*
-6. Open Lighting Project support. This was pointed out by a member of [r/lightingdesign](https://reddit.com/lightingdesign) that OLP would be an efficient way to assist LD's to make and use OpenFixtures. It's on the roadmap now, hopefully a tool could be made within a few months, we'll see.
+6. Open Lighting Project/Open Fixture Library support. This was pointed out by a member of [r/lightingdesign](https://reddit.com/lightingdesign) that OLP/OFL would be an efficient way to assist LD's to make and use OpenFixtures. It's on the roadmap now, hopefully a tool could be made within a few months, we'll see. It's going to be more efficient for us all to collaborate to make sure that this project gets to fruition. I would rather not re-invent the wheel.
 
 ## Installation
 **This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
@@ -245,3 +245,17 @@ Please do. It would be incredible if you forked the project to add any cool feat
 - Buy me a coffee, maybe?
 - Star the project on GitHub
 - Follow me on Instagram. @open_fixtures
+
+## About the author
+### Miles Punch (he/him)
+Miles is a software engineering student based in Newcastle, NSW, Australia. He's learning German on the side (in preperation for an engineering career based in Germany), as well as learning the delicate art of product and system design. OpenFixtures is his main project, as well as trying to pass his final year exams. He's a lighting designer by trade, with experience with grandMA3, ETC Eos, and QLC+, running an AV Hire company in the Hunter/New England area, but designing creative and intelligent systems is his passion. He can be contacted via email (as below), and will listen to *any* new ideas or criticism of OpenFixtures. He also has two cats and appreciates a good latté.
+
+### Contact
+
+[miles-p on Github](http://github.com/miles-p)
+
+[@open_fixtures on Instagram](http://instagram.com/open_fixtures)
+
+[PunchAV on the web](https://punchav.com)
+
+[miles@punchav.com via email](mailto:miles@punchav.com)
