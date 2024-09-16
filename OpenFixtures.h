@@ -13,6 +13,7 @@
 #include <Adafruit_NeoPixel.h> // Include Adafruit NeoPixel library
 #include <Servo.h> // Include Servo library
 #include "Arduino.h" // Include Arduino library
+#include "OpenFixtures.cpp"
 
 int globalAddress;
 
@@ -36,15 +37,6 @@ class Fixture {
     int addressPriv;
 };
 
-void Fixture::begin() {
-  globalAddress = addressPriv - 1;
-  DMXSerial.init(DMXReceiver);
-};
-
-Fixture::Fixture(int address) {
-  addressPriv = address;
-};
-
 // Class for controlling dimmers
 class SimpleDimmer {
   public:
@@ -61,16 +53,6 @@ class SimpleDimmer {
     int addressPriv;   // DMX address of the dimmer
     int pinPriv;        // Pin connected to the dimmer
 };
-
-// Method definition to initialize dimmer pin
-void SimpleDimmer::begin() {
-  pinMode(pinPriv, OUTPUT); // Set pin as output
-}
-// Constructor for Dimmer class
-SimpleDimmer::SimpleDimmer(int address, int pin) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-}
 
 class Strobe {
   public:
@@ -106,23 +88,6 @@ class Strobe {
     bool lowOffPriv;
     bool highOnPriv;
     bool statePriv;
-};
-
-void Strobe::begin() {
-  pinMode(pinPriv, OUTPUT);
-  statePriv = true;
-  millisPrev = 0;
-};
-
-Strobe::Strobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff, bool lowOff, bool highOn) {
-  addressPriv = address;
-  pinPriv = pin;
-  slowestPriv = slowest;
-  fastestPriv = fastest;
-  levelOnPriv = levelOn;
-  levelOffPriv = levelOff;
-  lowOffPriv = lowOff;
-  highOnPriv = highOn;
 };
 
 class IntStrobe {
@@ -161,23 +126,6 @@ class IntStrobe {
     bool statePriv;
 };
 
-void IntStrobe::begin() {
-  pinMode(pinPriv, OUTPUT);
-  statePriv = true;
-  millisPrev = 0;
-};
-
-IntStrobe::IntStrobe(int address, int pin, int slowest, int fastest, int levelOn, int levelOff, bool lowOff, bool highOn) {
-  addressPriv = address;
-  pinPriv = pin;
-  slowestPriv = slowest;
-  fastestPriv = fastest;
-  levelOnPriv = levelOn;
-  levelOffPriv = levelOff;
-  lowOffPriv = lowOff;
-  highOnPriv = highOn;
-};
-
 // Class for controlling dimmers
 class RangedDimmer {
   public:
@@ -205,21 +153,6 @@ class RangedDimmer {
     int outputHighPriv; // Output high range
 };
 
-// Method definition to initialize dimmer pin
-void RangedDimmer::begin() {
-  pinMode(pinPriv, OUTPUT); // Set pin as output
-}
-
-// Constructor for Dimmer class
-RangedDimmer::RangedDimmer(int address, int pin, int dmxLow, int dmxHigh, int outputLow, int outputHigh) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  dmxLowPriv = dmxLow; // Set DMX low range
-  dmxHighPriv = dmxHigh; // Set DMX high range
-  outputLowPriv = outputLow; // Set output low range
-  outputHighPriv = outputHigh; // Set output high range
-}
-
 // Class for controlling relays
 class Relay {
   public:
@@ -239,19 +172,6 @@ class Relay {
     int pinPriv;       // Pin connected to the relay
     int threshPriv;    // Threshold for relay activation
     bool invertedPriv; // Whether the relay is inverted
-};
-
-// Method definition to initialize relay pin
-void Relay::begin() {
-  pinMode(pinPriv, OUTPUT); // Set pin as output
-};
-
-// Constructor for Relay class
-Relay::Relay(int address, int pin, int thresh, bool inverted) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  threshPriv = thresh; // Set threshold
-  invertedPriv = inverted; // Set inverted
 };
 
 // Class for controlling RGB LEDs
@@ -274,21 +194,6 @@ class RGB {
     int pinBPriv;      // Blue pin connected to the RGB LED
 };
 
-// Method definition to initialize RGB LED pins
-void RGB::begin() {
-  pinMode(pinRPriv, OUTPUT); // Set red pin as output
-  pinMode(pinGPriv, OUTPUT); // Set green pin as output
-  pinMode(pinBPriv, OUTPUT); // Set blue pin as output
-};
-
-// Constructor for RGB class
-RGB::RGB(int address, int pinR, int pinG, int pinB) {
-  addressPriv = address; // Set DMX address
-  pinRPriv = pinR; // Set red pin
-  pinGPriv = pinG; // Set green pin
-  pinBPriv = pinB; // Set blue pin
-};
-
 // Class for controlling RGB LEDs with individual control
 class IRGB {
   public:
@@ -307,21 +212,6 @@ class IRGB {
     int pinRPriv;      // Red pin connected to the RGB LED
     int pinGPriv;      // Green pin connected to the RGB LED
     int pinBPriv;      // Blue pin connected to the RGB LED
-};
-
-// Method definition to initialize individually controlled RGB LED pins
-void IRGB::begin() {
-  pinMode(pinRPriv, OUTPUT); // Set red pin as output
-  pinMode(pinGPriv, OUTPUT); // Set green pin as output
-  pinMode(pinBPriv, OUTPUT); // Set blue pin as output
-};
-
-// Constructor for IRGB class
-IRGB::IRGB(int address, int pinR, int pinG, int pinB) {
-  addressPriv = address; // Set DMX address
-  pinRPriv = pinR; // Set red pin
-  pinGPriv = pinG; // Set green pin
-  pinBPriv = pinB; // Set blue pin
 };
 
 // Class for controlling NeoPixel RGB LEDs with Pixel Mapping
@@ -349,20 +239,6 @@ class NeoPixel_PM_RGB {
     Adafruit_NeoPixel* pixels; // NeoPixel object
 };
 
-// Method definition to initialize NeoPixel RGB LEDs
-void NeoPixel_PM_RGB::begin() {
-  pixels = new Adafruit_NeoPixel(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800); // Create NeoPixel object
-  pixels->begin(); // Initialize NeoPixel strip
-};
-
-// Constructor for NeoPixel_PM_RGB class
-NeoPixel_PM_RGB::NeoPixel_PM_RGB(int address, int pin, int pixNum, int startPix) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  pixNumPriv = pixNum; // Set number of pixels
-  startPixPriv = startPix; // Set start pixel
-};
-
 // Class for controlling NeoPixel RGB LEDs with Pixel Mapping
 class NeoPixel_RGB {
   public:
@@ -388,20 +264,6 @@ class NeoPixel_RGB {
     Adafruit_NeoPixel* pixels; // NeoPixel object
 };
 
-// Method definition to initialize NeoPixel RGB LEDs
-void NeoPixel_RGB::begin() {
-  pixels = new Adafruit_NeoPixel(pixNumPriv, pinPriv, NEO_GRB + NEO_KHZ800); // Create NeoPixel object
-  pixels->begin(); // Initialize NeoPixel strip
-};
-
-// Constructor for NeoPixel_PM_RGB class
-NeoPixel_RGB::NeoPixel_RGB(int address, int pin, int pixNum, int startPix) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  pixNumPriv = pixNum; // Set number of pixels
-  startPixPriv = startPix; // Set start pixel
-};
-
 // Class for controlling servos with DMX
 class DMXServo {
   public:
@@ -416,20 +278,6 @@ class DMXServo {
     int servoMinPriv; // Minimum servo position
     int servoMaxPriv; // Maximum servo position
     Servo* Hservo; // Servo object
-};
-
-// Method definition to initialize servo
-void DMXServo::begin() {
-  Hservo = new Servo(); // Create Servo object
-  Hservo->attach(pinPriv); // Attach servo to pin
-};
-
-// Constructor for DMXServo class
-DMXServo::DMXServo(int address, int pin, int servoMin, int servoMax) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  servoMinPriv = servoMin; // Set minimum servo position
-  servoMaxPriv = servoMax; // Set maximum servo position
 };
 
 // Class for controlling servo reels with DMX
@@ -448,20 +296,4 @@ class ServoReel {
     int reelSlotsCountPriv; // Number of reel slots
     int adjustmentAnglePriv; // Adjustment angle
     Servo* Rservo; // Servo object
-};
-
-// Method definition to initialize servo reel
-void ServoReel::begin() {
-  Rservo = new Servo(); // Create Servo object
-  Rservo->attach(pinPriv); // Attach servo to pin
-};
-
-// Constructor for ServoReel class
-ServoReel::ServoReel(int address, int pin, int servoMin, int servoMax, int reelSlotsCount, int adjustmentAngle) {
-  addressPriv = address; // Set DMX address
-  pinPriv = pin; // Set pin
-  servoMinPriv = servoMin; // Set minimum servo position
-  servoMaxPriv = servoMax; // Set maximum servo position
-  reelSlotsCountPriv = reelSlotsCount; // Set number of reel slots
-  adjustmentAnglePriv = adjustmentAngle; // Set adjustment angle
 };
