@@ -12,9 +12,10 @@ This project is an Arduino based lighting fixture system that provides an easy a
 6. Open Lighting Project/Open Fixture Library support. This was pointed out by a member of [r/lightingdesign](https://reddit.com/lightingdesign) that OLP/OFL would be an efficient way to assist LD's to make and use OpenFixtures. It's on the roadmap now, hopefully a tool could be made within a few months, we'll see. It's going to be more efficient for us all to collaborate to make sure that this project gets to fruition. I would rather not re-invent the wheel.
 7. FastLED NeoFetch. I'm currently having latency issues with WS2812 strips as they get longer. I'll fix it, but it may mean migrating away from Adafruit's library, and to the FastLED library. Will this work? I dunno‽
 8. Generic UI. I love the SSD1306 display for it's price and it's reputability for ease of use, so I'll probably build a generic UI for OpenFixtures that **just works.** This will be the uniting force that means that OpenFixtures can become reputable. Let's give it a try!
+9. Fix the current code structure to change my .h file into both a .h and .cpp file, as pointed out by Reddit. That'll be pretty easy I hope, so expect a clean-up soon.
 
 ## Installation
-**This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this shit out for yourselves.**
+**This guide is for Windows interations of the Arduino IDE, and may not bear any resemblence to the Mac OS or Linux system installation steps. I'm not a Mac person, and I have no intention to give any money to Apple; thus I am unable to properly check whether this runs properly on Mac OS. As for Linux, you nerds are probably smart enough to figure this s\*\*t out for yourselves.**
 
 1. Download and install the Arduino IDE (https://www.arduino.cc/en/software)
 2. Select a supported microcontroller (AVE, etc)
