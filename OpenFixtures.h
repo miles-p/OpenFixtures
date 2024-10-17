@@ -14,7 +14,7 @@
 #include <Servo.h> // Include Servo library
 #include "Arduino.h" // Include Arduino library
 
-int globalAddress;
+int globalAddress; // This is the fixture's address
 
 class Fixture {
   public:
