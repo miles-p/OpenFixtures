@@ -1,3 +1,5 @@
+#include "OpenFixtures.h"
+
 void Fixture::begin() {
   globalAddress = addressPriv - 1;
   DMXSerial.init(DMXReceiver);
